@@ -36,7 +36,7 @@ public class TitleView : ViewBase
 	public void OnStartClick()
 	{
 		Close();
-		MainMgr.instance.AfterStarGame();
+		MainMgr.instance.AfterStartGame();
     }
 
 	public void OnInfoClick()

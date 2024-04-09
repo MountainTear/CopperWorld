@@ -8,7 +8,6 @@ public class AudioMgr : Singleton<AudioMgr>
     private AudioSource effectSource;   //“Ù–ß“Ù‘¥
     private AudioClip bgGameStart, bgGameIn, run;
 
-
     public AudioMgr()
     {
         InitSourceAndClip();

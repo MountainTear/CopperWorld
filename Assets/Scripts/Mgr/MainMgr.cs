@@ -18,8 +18,7 @@ public class MainMgr : MonoBehaviour
     {
         //初始化变量
         gameState = GameState.GameBegin;
-        //加载界面前实例化单例防止堵塞
-        var uiMgrInstance = UIMgr.Instance;
+        //加载界面前实例化特定单例防止堵塞
         var configMgrInstance = ConfigMgr.Instance;
         var audioMgrInstance = AudioMgr.Instance;
         //加载标题界面
@@ -28,11 +27,13 @@ public class MainMgr : MonoBehaviour
         AudioMgr.Instance.BgGameStartAudio();
     }
 
-    public void AfterStarGame()
+    public void AfterStartGame()
     {
         gameState = GameState.GameIn;
         //加载背景音乐
         AudioMgr.Instance.BgGameInAudio();
+        //进入家地图
+        SceneMgr.Instance.EnterHomeMap();
     }
 
     private void Update()
