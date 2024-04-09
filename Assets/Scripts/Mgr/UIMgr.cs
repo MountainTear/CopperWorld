@@ -8,14 +8,14 @@ public class UIMgr : Singleton<UIMgr>
     //画布，用于指向场景中的画布
     private GameObject canvas;
     //界面字典，用以存放已打开的界面
-    public Dictionary<string, ViewBase> dict;
+    public Dictionary<string, ViewBase> viewDict;
     //层级字典，用以存放各个层级所对应的父物体
     private Dictionary<UILayer, Transform> layerDict;
 
     public UIMgr()
     {
         InitLayer();
-        dict = new Dictionary<string, ViewBase>();
+        viewDict = new Dictionary<string, ViewBase>();
     }
    
     //初始化层
@@ -41,14 +41,14 @@ public class UIMgr : Singleton<UIMgr>
     {
         //已经打开
         string name = typeof(T).ToString();
-        if (dict.ContainsKey(name))
+        if (viewDict.ContainsKey(name))
         {
             return;
         }
         //界面脚本
         ViewBase View = canvas.AddComponent<T>();
         View.Init(args);
-        dict.Add(name, View);
+        viewDict.Add(name, View);
         //加载皮肤
         skinPath = skinPath != "" ? skinPath : View.skinPath;
         GameObject skin = Resources.Load<GameObject>(skinPath);
@@ -70,13 +70,13 @@ public class UIMgr : Singleton<UIMgr>
     //关闭界面
     public void CloseView(string name)
     {
-        ViewBase View = (ViewBase)dict[name];
+        ViewBase View = (ViewBase)viewDict[name];
         if(View == null)
         {
             return;
         }
         View.OnClosing();
-        dict.Remove(name);
+        viewDict.Remove(name);
         View.OnClosed();
         //销毁皮肤和界面
         GameObject.Destroy(View.skin);
@@ -86,7 +86,7 @@ public class UIMgr : Singleton<UIMgr>
     //获取界面
     public ViewBase GetView(string name)
     {
-        ViewBase View = (ViewBase)dict[name];
+        ViewBase View = (ViewBase)viewDict[name];
         return View;
     }
 }

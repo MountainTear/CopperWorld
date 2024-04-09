@@ -8,7 +8,12 @@ public class ConfigMgr : Singleton<ConfigMgr>
 {
     public ConfigTip configTip = new ConfigTip();
 
-    public void InitConfig()
+    public ConfigMgr()
+    {
+        InitConfig();
+    }
+
+    private void InitConfig()
     {
         LoadTipConfig();
     }

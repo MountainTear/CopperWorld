@@ -17,8 +17,10 @@ public class MainMgr : MonoBehaviour
 
     private void Start()
     {
-        //预加载配置
-        ConfigMgr.Instance.InitConfig();
+        //加载界面前实例化单例防止堵塞
+        var uiMgrInstance = UIMgr.Instance;
+        var configMgrInstance = ConfigMgr.Instance;
+        var audioMgrInstance = AudioMgr.Instance;
         //加载标题界面
         UIMgr.Instance.OpenView<TitleView>("");
     }
