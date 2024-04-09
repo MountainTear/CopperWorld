@@ -84,10 +84,18 @@ public class UIMgr : Singleton<UIMgr>
     }
 
     //获取界面
-    public ViewBase GetView(string name)
+    public T GetView<T>() where T : ViewBase
     {
-        ViewBase View = (ViewBase)viewDict[name];
-        return View;
+        // 使用类型的全名作为字典的键
+        string key = typeof(T).FullName;
+
+        if (key != null && viewDict.TryGetValue(key, out ViewBase view))
+        {
+            return view as T;
+        }
+
+        // 如果没有找到或者转换失败，返回默认值（null）
+        return default(T);
     }
 }
 
