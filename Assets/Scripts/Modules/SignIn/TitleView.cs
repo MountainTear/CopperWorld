@@ -35,8 +35,9 @@ public class TitleView : ViewBase
 
 	public void OnStartClick()
 	{
-		// TODO: Add your button click handling logic here
-	}
+		Close();
+		MainMgr.instance.AfterStarGame();
+    }
 
 	public void OnInfoClick()
 	{

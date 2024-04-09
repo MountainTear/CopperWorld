@@ -17,7 +17,7 @@ public class UIUtils : Singleton<UIUtils>
     public void ToolTip(TipType type)
     {
         args[0] = (int)type;
-        UIMgr.Instance.OpenView<TipPopView>("", args);
+        UIMgr.Instance.OpenView<TipPopView>(args);
     }
 }
 

@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class AudioMgr : Singleton<AudioMgr>
 {
-    private AudioSource audioSource;
-    private AudioClip jump, run, shoot,change;
+    private AudioSource bgSource;   //±≥æ∞“Ù‘¥
+    private AudioSource effectSource;   //“Ù–ß“Ù‘¥
+    private AudioClip bgGameStart, bgGameIn, run;
 
 
     public AudioMgr()
@@ -15,31 +16,30 @@ public class AudioMgr : Singleton<AudioMgr>
     
     private void InitSourceAndClip()
     {
-        audioSource = GameObject.Find("AudioParent").GetComponent<AudioSource>();
+        bgSource = GameObject.Find("BgAudio").GetComponent<AudioSource>();
+        effectSource = GameObject.Find("EffectAudio").GetComponent<AudioSource>();
+
+        bgGameStart = Resources.Load<AudioClip>("Audios/gameStart");
+        bgGameIn = Resources.Load<AudioClip>("Audios/gameIn");
+        run = Resources.Load<AudioClip>("Audios/run");
     }
 
-    public void JumpAudio()
+    public void BgGameStartAudio()
     {
-        audioSource.clip = jump;
-        audioSource.Play();
+        bgSource.clip = bgGameStart;
+        bgSource.Play();
+    }
+
+    public void BgGameInAudio()
+    {
+        bgSource.clip = bgGameIn;
+        bgSource.Play();
     }
 
     public void RunAudio()
     {
-        audioSource.clip = run;
-        audioSource.Play();
-    }
-
-    public void ShootAudio()
-    {
-        audioSource.clip = shoot;
-        audioSource.Play();
-    }
-
-    public void ChangeAudio()
-    {
-        audioSource.clip = change;
-        audioSource.Play();
+        effectSource.clip = run;
+        effectSource.Play();
     }
 
 }

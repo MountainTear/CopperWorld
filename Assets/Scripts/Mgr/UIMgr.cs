@@ -37,7 +37,7 @@ public class UIMgr : Singleton<UIMgr>
     }
 
     //打开界面
-    public void OpenView<T>(string skinPath, params object[] args) where T : ViewBase
+    public void OpenView<T>( params object[] args) where T : ViewBase
     {
         //已经打开
         string name = typeof(T).ToString();
@@ -50,7 +50,7 @@ public class UIMgr : Singleton<UIMgr>
         View.Init(args);
         viewDict.Add(name, View);
         //加载皮肤
-        skinPath = skinPath != "" ? skinPath : View.skinPath;
+        string skinPath = View.skinPath;
         GameObject skin = Resources.Load<GameObject>(skinPath);
         if (skin == null)
         {
