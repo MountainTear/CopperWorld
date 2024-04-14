@@ -73,6 +73,5 @@ crashlytics-build.properties
 
 #vs
 .vsconfig
-Packages/manifest.json
-Packages/packages-lock.json
+/Packages
 ProjectSettings/ProjectVersion.txt
