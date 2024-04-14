@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UIUtils : Singleton<UIUtils>
 {
-    //打开界面用的变量
+    //鎵撳紑鐣岄潰鐢ㄧ殑鍙橀噺
     private object[] args;
     private GameObject loadingView;
 
@@ -15,13 +15,13 @@ public class UIUtils : Singleton<UIUtils>
         loadingView = GameObject.Find("LoadingParent");
     }
    
-    //加载界面
+    //鍔犺浇鐣岄潰
     public void SetLoading(bool isShow)
     {
         loadingView.SetActive(isShow); 
     }
 
-    //弹出提示弹窗
+    //寮瑰嚭鎻愮ず寮圭獥
     public void ToolTip(TipType type)
     {
         args[0] = (int)type;
@@ -31,5 +31,5 @@ public class UIUtils : Singleton<UIUtils>
 
 public enum TipType
 {
-    Info = 1,   //游戏介绍
+    Info = 1,   //娓告垙浠嬬粛
 }

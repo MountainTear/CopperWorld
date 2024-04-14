@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class UIMgr : Singleton<UIMgr>
 {
-    //»­²¼£¬ÓÃÓÚÖ¸Ïò³¡¾°ÖĞµÄ»­²¼
+    //ç”»å¸ƒï¼Œç”¨äºæŒ‡å‘åœºæ™¯ä¸­çš„ç”»å¸ƒ
     private GameObject canvas;
-    //½çÃæ×Öµä£¬ÓÃÒÔ´æ·ÅÒÑ´ò¿ªµÄ½çÃæ
+    //ç•Œé¢å­—å…¸ï¼Œç”¨ä»¥å­˜æ”¾å·²æ‰“å¼€çš„ç•Œé¢
     public Dictionary<string, ViewBase> viewDict;
-    //²ã¼¶×Öµä£¬ÓÃÒÔ´æ·Å¸÷¸ö²ã¼¶Ëù¶ÔÓ¦µÄ¸¸ÎïÌå
+    //å±‚çº§å­—å…¸ï¼Œç”¨ä»¥å­˜æ”¾å„ä¸ªå±‚çº§æ‰€å¯¹åº”çš„çˆ¶ç‰©ä½“
     private Dictionary<UILayer, Transform> layerDict;
 
     public UIMgr()
@@ -18,7 +18,7 @@ public class UIMgr : Singleton<UIMgr>
         viewDict = new Dictionary<string, ViewBase>();
     }
    
-    //³õÊ¼»¯²ã
+    //åˆå§‹åŒ–å±‚
     private void InitLayer()
     {
         canvas = GameObject.Find("UIParent");
@@ -29,27 +29,27 @@ public class UIMgr : Singleton<UIMgr>
         layerDict = new Dictionary<UILayer, Transform>();
         foreach(UILayer p in Enum.GetValues(typeof(UILayer)))
         {
-            //³¡¾°ÖĞµÄCanvasÏÂµÄ²ã¼¶ÃüÃû·½Ê½Ò²ÒªÊÇUILayer
+            //åœºæ™¯ä¸­çš„Canvasä¸‹çš„å±‚çº§å‘½åæ–¹å¼ä¹Ÿè¦æ˜¯UILayer
             string name = p.ToString();
             Transform transform = canvas.transform.Find(name);
             layerDict.Add(p, transform);
         }
     }
 
-    //´ò¿ª½çÃæ
+    //æ‰“å¼€ç•Œé¢
     public void OpenView<T>( params object[] args) where T : ViewBase
     {
-        //ÒÑ¾­´ò¿ª
+        //å·²ç»æ‰“å¼€
         string name = typeof(T).ToString();
         if (viewDict.ContainsKey(name))
         {
             return;
         }
-        //½çÃæ½Å±¾
+        //ç•Œé¢è„šæœ¬
         ViewBase View = canvas.AddComponent<T>();
         View.Init(args);
         viewDict.Add(name, View);
-        //¼ÓÔØÆ¤·ô
+        //åŠ è½½çš®è‚¤
         string skinPath = View.skinPath;
         GameObject skin = Resources.Load<GameObject>(skinPath);
         if (skin == null)
@@ -57,17 +57,17 @@ public class UIMgr : Singleton<UIMgr>
             Debug.LogError("ViewMgr.OpenView fail, skin is null, skinPath =" + skinPath);
         }
         View.skin = GameObject.Instantiate(skin);
-        //×ø±ê
+        //åæ ‡
         Transform skinTrans = View.skin.transform;
         UILayer layer = View.layer;
         Transform parent = layerDict[layer];
         skinTrans.SetParent(parent, false);
-        //ViewµÄÉúÃüÖÜÆÚ
+        //Viewçš„ç”Ÿå‘½å‘¨æœŸ
         View.OnShowing();
         View.OnShowed();
     }
     
-    //¹Ø±Õ½çÃæ
+    //å…³é—­ç•Œé¢
     public void CloseView(string name)
     {
         ViewBase View = (ViewBase)viewDict[name];
@@ -78,15 +78,15 @@ public class UIMgr : Singleton<UIMgr>
         View.OnClosing();
         viewDict.Remove(name);
         View.OnClosed();
-        //Ïú»ÙÆ¤·ôºÍ½çÃæ
+        //é”€æ¯çš®è‚¤å’Œç•Œé¢
         GameObject.Destroy(View.skin);
         GameObject.Destroy(View);
     }
 
-    //»ñÈ¡½çÃæ
+    //è·å–ç•Œé¢
     public T GetView<T>() where T : ViewBase
     {
-        // Ê¹ÓÃÀàĞÍµÄÈ«Ãû×÷Îª×ÖµäµÄ¼ü
+        // ä½¿ç”¨ç±»å‹çš„å…¨åä½œä¸ºå­—å…¸çš„é”®
         string key = typeof(T).FullName;
 
         if (key != null && viewDict.TryGetValue(key, out ViewBase view))
@@ -94,18 +94,18 @@ public class UIMgr : Singleton<UIMgr>
             return view as T;
         }
 
-        // Èç¹ûÃ»ÓĞÕÒµ½»òÕß×ª»»Ê§°Ü£¬·µ»ØÄ¬ÈÏÖµ£¨null£©
+        // å¦‚æœæ²¡æœ‰æ‰¾åˆ°æˆ–è€…è½¬æ¢å¤±è´¥ï¼Œè¿”å›é»˜è®¤å€¼ï¼ˆnullï¼‰
         return default(T);
     }
 }
 
 /// <summary>
-/// ·Ö²ãÀàĞÍ
+/// åˆ†å±‚ç±»å‹
 /// </summary>
 public enum UILayer
 {
-    //½çÃæ
+    //ç•Œé¢
     View,
-    //µ¯´°
+    //å¼¹çª—
     Tip
 }

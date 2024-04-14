@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MainMgr : MonoBehaviour
 {
-    //µ¥Àı
+    //å•ä¾‹
     public static MainMgr instance;
     
     private GameState gameState;
@@ -16,24 +16,24 @@ public class MainMgr : MonoBehaviour
 
     private void Start()
     {
-        //³õÊ¼»¯±äÁ¿
+        //åˆå§‹åŒ–å˜é‡
         gameState = GameState.GameBegin;
         Application.targetFrameRate = 60;
-        //¼ÓÔØ½çÃæÇ°ÊµÀı»¯ÌØ¶¨µ¥Àı·ÀÖ¹¶ÂÈû
+        //åŠ è½½ç•Œé¢å‰å®ä¾‹åŒ–ç‰¹å®šå•ä¾‹é˜²æ­¢å µå¡
         var configMgrInstance = ConfigMgr.Instance;
         var audioMgrInstance = AudioMgr.Instance;
-        //¼ÓÔØ±êÌâ½çÃæ
+        //åŠ è½½æ ‡é¢˜ç•Œé¢
         UIMgr.Instance.OpenView<TitleView>();
-        //¼ÓÔØ±³¾°ÒôÀÖ
+        //åŠ è½½èƒŒæ™¯éŸ³ä¹
         AudioMgr.Instance.BgGameStartAudio();
     }
 
     public void AfterStartGame()
     {
         gameState = GameState.GameIn;
-        //¼ÓÔØ±³¾°ÒôÀÖ
+        //åŠ è½½èƒŒæ™¯éŸ³ä¹
         AudioMgr.Instance.BgGameInAudio();
-        //½øÈë¼ÒµØÍ¼
+        //è¿›å…¥å®¶åœ°å›¾
         SceneMgr.Instance.EnterHomeMap();
     }
 

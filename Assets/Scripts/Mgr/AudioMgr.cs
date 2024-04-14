@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class AudioMgr : Singleton<AudioMgr>
 {
-    private AudioSource bgSource;   //±³¾°ÒôÔ´
-    private AudioSource effectSource;   //ÒôĞ§ÒôÔ´
+    private AudioSource bgSource;   //èƒŒæ™¯éŸ³æº
+    private AudioSource effectSource;   //éŸ³æ•ˆéŸ³æº
     private AudioClip bgGameStart, bgGameIn, run;
 
     public AudioMgr()

@@ -13,19 +13,19 @@ public class Player : Singleton<Player>
     private BoxCollider2D footCollider;
 
     private bool isInit;
-    //ÒÆ¶¯ËÙ¶È
+    //ç§»åŠ¨é€Ÿåº¦
     public float runSpeed = 10.0f;
-    //ÌøÔ¾ÄÜÁ¦
+    //è·³è·ƒèƒ½åŠ›
     public float jumpForce = 7.0f;
     public float doubleJumpForce = 3.0f;
-    //bool Ìõ¼ş
-    //ÊÇ·ñÔÚµØÃæ
+    //bool æ¡ä»¶
+    //æ˜¯å¦åœ¨åœ°é¢
     private bool isGround;
-    //ÄÜ·ñ¶ş¶ÎÌø
+    //èƒ½å¦äºŒæ®µè·³
     public bool canDoubleJump;
-    //³¯Ïò
+    //æœå‘
     public Vector2 lookDirection;
-    //Ó°ÏìÒÆ¶¯±ÈÀı
+    //å½±å“ç§»åŠ¨æ¯”ä¾‹
     public float speedRate = 1;
     public float jumpRate = 1;
 
@@ -37,14 +37,14 @@ public class Player : Singleton<Player>
 
     public void Init()
     {
-        //ÊµÀı»¯ÊµÌå
+        //å®ä¾‹åŒ–å®ä½“
         entity = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Scene/Player"), parent.transform);
-        //³õÊ¼»¯×é¼ş
+        //åˆå§‹åŒ–ç»„ä»¶
         uRigidbody = entity.GetComponent<Rigidbody2D>();
         uAnimator = entity.GetComponent<Animator>();
         myCollider = entity.GetComponent<CapsuleCollider2D>();
         footCollider = entity.GetComponent<BoxCollider2D>();
-        //¼ÓÔØÉãÏñ»ú
+        //åŠ è½½æ‘„åƒæœº
         var camera = GameObject.Find("Follow Camera").GetComponent<CinemachineVirtualCamera>();
         camera.Follow = entity.transform;
 
@@ -64,54 +64,54 @@ public class Player : Singleton<Player>
         SwitchAnimation();
     }
 
-    #region ½ÇÉ«¿ØÖÆ
-    //¼ì²âÊÇ·ñÔÚµØÃæ
+    #region è§’è‰²æ§åˆ¶
+    //æ£€æµ‹æ˜¯å¦åœ¨åœ°é¢
     void CheckGround()
     {
         isGround = footCollider.IsTouchingLayers(LayerMask.GetMask("Ground"));
     }
 
-    //·­×ªÒÆ¶¯·½Ïò
+    //ç¿»è½¬ç§»åŠ¨æ–¹å‘
     void Flip()
     {
-        //ÅĞ¶ÏXÖáÓĞÎŞËÙ¶È
+        //åˆ¤æ–­Xè½´æœ‰æ— é€Ÿåº¦
         bool playerHasXAxisSpeed = Mathf.Abs(uRigidbody.velocity.x) > Mathf.Epsilon;
         if (playerHasXAxisSpeed)
         {
-            //Èç¹û·½ÏòÍùÓÒ²»ĞèÒª·­×ª
+            //å¦‚æœæ–¹å‘å¾€å³ä¸éœ€è¦ç¿»è½¬
             if (uRigidbody.velocity.x > 0.1f)
             {
                 entity.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                //Ë³±ã·­×ª³¯Ïò
+                //é¡ºä¾¿ç¿»è½¬æœå‘
                 lookDirection = new Vector2(1, 0);
             }
-            //Èç¹ûÍù×óÔò·­×ª
+            //å¦‚æœå¾€å·¦åˆ™ç¿»è½¬
             if (uRigidbody.velocity.x < -0.1f)
             {
                 entity.transform.localRotation = Quaternion.Euler(0, 180, 0);
-                //Ë³±ã·­×ª³¯Ïò
+                //é¡ºä¾¿ç¿»è½¬æœå‘
                 lookDirection = new Vector2(-1, 0);
             }
         }
     }
 
-    //×óÓÒÒÆ¶¯
+    //å·¦å³ç§»åŠ¨
     void Run()
     {
-        //»ñÈ¡ÒÆ¶¯·½Ïò
+        //è·å–ç§»åŠ¨æ–¹å‘
         float moveDirection = Input.GetAxis("Horizontal");
 
-        //ÒÆ¶¯ËÙ¶È
+        //ç§»åŠ¨é€Ÿåº¦
         Vector2 playerVelocity = new Vector2(moveDirection * runSpeed * speedRate, uRigidbody.velocity.y);
         uRigidbody.velocity = playerVelocity;
 
-        //ÅĞ¶ÏXÖáÓĞÎŞËÙ¶È
+        //åˆ¤æ–­Xè½´æœ‰æ— é€Ÿåº¦
         bool playerHasXAxisSpeed = Mathf.Abs(uRigidbody.velocity.x) > Mathf.Epsilon;
         uAnimator.SetBool("Run", playerHasXAxisSpeed);
 
     }
 
-    //ÌøÔ¾
+    //è·³è·ƒ
     void Jump()
     {
         if (Input.GetButtonDown("Jump"))
@@ -136,13 +136,13 @@ public class Player : Singleton<Player>
         }
     }
 
-    //ÇĞ»»
+    //åˆ‡æ¢
     void SwitchAnimation()
     {
         uAnimator.SetBool("Idle", false);
         if (uAnimator.GetBool("Jump"))
         {
-            //µ±ËÙ¶ÈÏÂ½µµ½×î´óÖµ¿ªÊ¼ÏÂÂä
+            //å½“é€Ÿåº¦ä¸‹é™åˆ°æœ€å¤§å€¼å¼€å§‹ä¸‹è½
             if (uRigidbody.velocity.y < 0.0f)
             {
                 uAnimator.SetBool("Jump", false);
@@ -154,10 +154,10 @@ public class Player : Singleton<Player>
             uAnimator.SetBool("Fall", false);
             uAnimator.SetBool("Idle", true);
         }
-        //¶ş¶ÎÌøÅĞ¶Ï
+        //äºŒæ®µè·³åˆ¤æ–­
         if (uAnimator.GetBool("DoubleJump"))
         {
-            //µ±ËÙ¶ÈÏÂ½µµ½×î´óÖµ¿ªÊ¼ÏÂÂä
+            //å½“é€Ÿåº¦ä¸‹é™åˆ°æœ€å¤§å€¼å¼€å§‹ä¸‹è½
             if (uRigidbody.velocity.y < 0.0f)
             {
                 uAnimator.SetBool("DoubleJump", false);
@@ -172,7 +172,7 @@ public class Player : Singleton<Player>
     }
     #endregion
 
-    #region Åö×²
+    #region ç¢°æ’
     
     #endregion
 

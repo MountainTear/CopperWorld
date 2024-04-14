@@ -4,50 +4,50 @@ using UnityEngine;
 
 public class ViewBase : MonoBehaviour
 {
-    //Æ¤·ôÂ·¾¶
+    //çš®è‚¤è·¯å¾„
     public string skinPath;
     /// <summary>
-    /// Æ¤·ô£¬Ò»°ãÖ¸µÄÊÇÒ³ÃæµÄPrefab
+    /// çš®è‚¤ï¼Œä¸€èˆ¬æŒ‡çš„æ˜¯é¡µé¢çš„Prefab
     /// </summary>
     public GameObject skin;
-    //²ã¼¶
+    //å±‚çº§
     public UILayer layer;
-    //Ãæ°å²ÎÊı
+    //é¢æ¿å‚æ•°
     public object[] args;
-    //Ê±Í£¹¦ÄÜ¿ª¹Ø
+    //æ—¶åœåŠŸèƒ½å¼€å…³
     public bool isTimePause;
 
-    #region ÉúÃüÖÜÆÚ
-    //³õÊ¼»¯
+    #region ç”Ÿå‘½å‘¨æœŸ
+    //åˆå§‹åŒ–
     public virtual void Init(params object[] args)
     {
         this.args = args;
     }
-    //Ãæ°å¸üĞÂÇ°
+    //é¢æ¿æ›´æ–°å‰
     public virtual void OnShowing()
     {
-        //Ê±Í£¹¦ÄÜ¼ì²â
+        //æ—¶åœåŠŸèƒ½æ£€æµ‹
         if (isTimePause)
         {
             Time.timeScale = 0;
         }
     }
-    //Ãæ°å¸üĞÂºó
+    //é¢æ¿æ›´æ–°å
     public virtual void OnShowed() { }
-    //¹Ø±ÕÇ°
+    //å…³é—­å‰
     public virtual void OnClosing()
     {
-        //Ê±Í£¹¦ÄÜ¼ì²â
+        //æ—¶åœåŠŸèƒ½æ£€æµ‹
         if (isTimePause)
         {
             Time.timeScale = 1;
         }
     }
-    //¹Ø±Õºó
+    //å…³é—­å
     public virtual void OnClosed() { }
     #endregion
 
-    #region ²Ù×÷
+    #region æ“ä½œ
     protected virtual void Close()
     {
         string name = this.GetType().ToString();

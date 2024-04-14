@@ -12,7 +12,7 @@ public class SceneMgr : Singleton<SceneMgr>
         posCache = Vector3.zero;
     }
 
-    #region 地图处理
+    #region 鍦板浘澶勭悊
     public void EnterHomeMap()
     {
         PreEnterMap();
@@ -21,7 +21,7 @@ public class SceneMgr : Singleton<SceneMgr>
 
     private void AfterEnterHomeMap()
     {
-        //加载玩家
+        //鍔犺浇鐜╁
         if (!PlayerMgr.Instance.isPlayerInit)
         {
             PlayerMgr.Instance.InitPlayer();
@@ -43,7 +43,7 @@ public class SceneMgr : Singleton<SceneMgr>
     }
     #endregion
 
-    #region 场景处理
+    #region 鍦烘櫙澶勭悊
     private void PreEnterMap()
     {
         string sceneName = MapTypeToSceneName(mapType);
@@ -58,14 +58,14 @@ public class SceneMgr : Singleton<SceneMgr>
     {
         string sceneName = MapTypeToSceneName(mapType);
         UIUtils.Instance.SetLoading(true);
-        // 异步加载场景
+        // 寮傛鍔犺浇鍦烘櫙
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-        // 等待场景加载完成
+        // 绛夊緟鍦烘櫙鍔犺浇瀹屾垚
         while (!asyncLoad.isDone)
         {
             yield return null;
         }
-        // 执行加载完成后的操作
+        // 鎵ц鍔犺浇瀹屾垚鍚庣殑鎿嶄綔
         UIUtils.Instance.SetLoading(false);
         LoadSceneCallback(mapType);
     }
@@ -87,7 +87,7 @@ public class SceneMgr : Singleton<SceneMgr>
     }
     #endregion
 
-    #region 玩家处理
+    #region 鐜╁澶勭悊
     private void ResetPlayerPos()
     {
         if (mapType == MapType.Home)
