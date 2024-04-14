@@ -17,7 +17,7 @@ public class UIUtils : Singleton<UIUtils>
    
     //º”‘ÿΩÁ√Ê
     public void SetLoading(bool isShow)
-    { 
+    {
         loadingView.SetActive(isShow); 
     }
 

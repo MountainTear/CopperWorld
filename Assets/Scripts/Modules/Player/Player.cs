@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class Player : Singleton<Player>
 {
     private GameObject parent;
-    private GameObject entity;
+    public GameObject entity;
     private Rigidbody2D uRigidbody;
     private Animator uAnimator;
-    private BoxCollider2D uBox;
+    private CapsuleCollider2D myCollider ;
+    private BoxCollider2D footCollider;
 
     private bool isInit;
     //移动速度
@@ -42,7 +42,8 @@ public class Player : Singleton<Player>
         //初始化组件
         uRigidbody = entity.GetComponent<Rigidbody2D>();
         uAnimator = entity.GetComponent<Animator>();
-        uBox = entity.GetComponent<BoxCollider2D>();
+        myCollider = entity.GetComponent<CapsuleCollider2D>();
+        footCollider = entity.GetComponent<BoxCollider2D>();
         //加载摄像机
         var camera = GameObject.Find("Follow Camera").GetComponent<CinemachineVirtualCamera>();
         camera.Follow = entity.transform;
@@ -63,10 +64,11 @@ public class Player : Singleton<Player>
         SwitchAnimation();
     }
 
+    #region 角色控制
     //检测是否在地面
     void CheckGround()
     {
-        isGround = uBox.IsTouchingLayers(LayerMask.GetMask("Ground"));
+        isGround = footCollider.IsTouchingLayers(LayerMask.GetMask("Ground"));
     }
 
     //翻转移动方向
@@ -168,4 +170,10 @@ public class Player : Singleton<Player>
             uAnimator.SetBool("Idle", true);
         }
     }
+    #endregion
+
+    #region 碰撞
+    
+    #endregion
+
 }

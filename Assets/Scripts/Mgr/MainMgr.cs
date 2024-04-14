@@ -18,6 +18,7 @@ public class MainMgr : MonoBehaviour
     {
         //初始化变量
         gameState = GameState.GameBegin;
+        Application.targetFrameRate = 60;
         //加载界面前实例化特定单例防止堵塞
         var configMgrInstance = ConfigMgr.Instance;
         var audioMgrInstance = AudioMgr.Instance;
