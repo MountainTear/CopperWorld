@@ -1,13 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerMgr : Singleton<PlayerMgr>
 {
     public Vector3 ORIGIN_POS;  //初始位置
     public Dictionary<SceneType, Vector3> SCENE_CHANGE_POS;  //切换场景的位置
+
+    public GameObject cameraRange;
+
     public bool isPlayerInit = false;
     public bool isSetOriginPos = false;
+    public Vector3 posCache;
 
     public PlayerMgr()
     {
@@ -17,6 +23,8 @@ public class PlayerMgr : Singleton<PlayerMgr>
             { SceneType.Home, new Vector3(11.5f, -2.95f, 0)},
             { SceneType.Mine, new Vector3(-11.5f, -2.95f, 0)},
         };
+        cameraRange = GameObject.Find("CameraRange");
+        posCache = Vector3.zero;
     }
 
     public void InitPlayer()
@@ -60,6 +68,14 @@ public class PlayerMgr : Singleton<PlayerMgr>
             Player.Instance.camera.enabled = enable;
         }
     }
+
+    public void UpdateCameraRange()
+    {
+        float posY = Player.Instance.entity.transform.position.y;
+        float originY = ORIGIN_POS.y;
+        posCache.y = posY < originY ? posY - originY : 0;
+        cameraRange.transform.position = posCache;
+    }
     #endregion
 
     #region 玩家信息获取
@@ -70,7 +86,7 @@ public class PlayerMgr : Singleton<PlayerMgr>
         int originY = MapMgr.Instance.ORIGIN_POS_Y;
         if (isPlayerInit && posY <= originY)
         {
-            layer = (int)(originY - posY) / MapMgr.Instance.GRID_WIDTH;
+            layer = (int)math.ceil((originY - posY) / MapMgr.Instance.GRID_WIDTH);
         }
         return layer;
     }

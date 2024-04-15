@@ -86,9 +86,6 @@ public class SceneMgr : Singleton<SceneMgr>
     }
     #endregion
 
-    #region 玩家处理
-    #endregion
-
     public void Update()
     {
         PlayerMgr.Instance.Update();
@@ -98,6 +95,7 @@ public class SceneMgr : Singleton<SceneMgr>
         }else if (sceneType == SceneType.Mine)
         {
             PlayerMgr.Instance.UpdatePlayerLayer();
+            PlayerMgr.Instance.UpdateCameraRange();
         }
     }
 }
