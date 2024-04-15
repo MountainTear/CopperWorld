@@ -45,7 +45,7 @@ public class TipPopView : ViewBase
 
     private void UpdateInfo()
     {
-        Tip desc = ConfigMgr.Instance.GetTipById(type);
+        TipC desc = ConfigMgr.Instance.GetTipById(type);
         text_titlecr.text = desc.title;
         text_contentcr.text = desc.content;
     }

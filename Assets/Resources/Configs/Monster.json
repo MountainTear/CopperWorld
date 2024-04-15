@@ -1,0 +1,36 @@
+{
+  "monsterList": [
+    {
+      "id": 1,
+      "name": "A",
+      "layer": [1, 20],
+      "size": [2,4],
+      "rateList":[
+        {
+          "value":0.2,
+          "num":1
+        },
+        {
+          "value":0.1,
+          "num":2
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "B",
+      "layer": [21, 40],
+      "size": [3,5],
+      "rateList":[
+        {
+          "value":0.2,
+          "num":1
+        },
+        {
+          "value":0.1,
+          "num":2
+        }
+      ]
+    }
+  ]
+}

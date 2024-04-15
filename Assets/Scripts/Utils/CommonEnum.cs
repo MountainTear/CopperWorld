@@ -14,7 +14,8 @@ public enum OrderInLayer
     Loading = -1,
     Default = 0,
     Map = 1,
-    Player = 2,
+    Tile = 2,
+    Player = 3,
 }
 
 public enum GameState
@@ -41,4 +42,17 @@ public enum MapIndex
     Up = 1,
     Middle = 2,
     Down = 3,
+}
+
+public enum GridType
+{
+    Air = 1,
+    Mineral = 2,
+    Monster = 3,
+}
+
+public enum SpecialMineralId
+{
+    Stone = 1,
+    Soil = 2,
 }

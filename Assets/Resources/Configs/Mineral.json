@@ -1,0 +1,43 @@
+{
+  "mineralList": [
+    {
+      "id": 1,
+      "name": "石头",
+      "layer": [1, 0],
+      "tile": "tile_1",
+      "rateList":[
+        {
+          "value":0.2,
+          "num":1
+        },
+        {
+          "value":0.1,
+          "num":2
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "泥土",
+      "layer": [1, 0],
+      "tile": "tile_2",
+      "rateList":[]
+    },
+    {
+      "id": 3,
+      "name": "黄铁矿",
+      "layer": [21, 100],
+      "tile": "tile_3",
+      "rateList":[
+        {
+          "value":0.2,
+          "num":1
+        },
+        {
+          "value":0.1,
+          "num":2
+        }
+      ]
+    }
+  ]
+}

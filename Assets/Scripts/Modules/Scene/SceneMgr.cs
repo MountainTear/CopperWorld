@@ -10,7 +10,7 @@ public class SceneMgr : Singleton<SceneMgr>
 
     public SceneMgr() {}
 
-    #region 地图处理
+    #region 场景进入
     public void EnterHomeScene()
     {
         PreEnterScene();
@@ -100,4 +100,16 @@ public class SceneMgr : Singleton<SceneMgr>
             PlayerMgr.Instance.UpdatePlayerLayer();
         }
     }
+}
+
+public struct MapLayerInfo
+{
+    public int begin;
+    public int end;
+}
+
+public struct GridInfo
+{
+    GridType gridType;
+    int id;
 }

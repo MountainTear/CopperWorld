@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class MapMgr : Singleton<MapMgr>
 {
-    public Vector2 MAP_CIZE;    //单个地图的大小
+    public Vector2 MAP_CIZE;    //单个地图的大小，实际大小
     public int ORIGIN_POS_Y;    //初始位置
-    public int GRID_WIDTH;  //格子宽度
-    public int LAYER_PER_MAP;   //单个地图的宽度层数
+    public int GRID_WIDTH;  //格子宽度，更改需同步修改Tilemap和Tile
+    public int MAP_WIDTH;   //单个地图的宽度（格子数）
+    public int MAP_LENGTH;   //单个地图的长度（格子数）
+
     public GameObject parent;
+
     private Dictionary<MapIndex, Map> mapDic;
+    private Dictionary<string, GridInfo> gridInfoDic;
     private int playerLayerCache = -1;
     public Vector3 posCache;
 
@@ -18,7 +23,8 @@ public class MapMgr : Singleton<MapMgr>
         MAP_CIZE = new Vector2(30, 10);
         ORIGIN_POS_Y = -4;
         GRID_WIDTH = 1;
-        LAYER_PER_MAP = (int)MAP_CIZE.y / GRID_WIDTH;
+        MAP_WIDTH = (int)MAP_CIZE.y / GRID_WIDTH;
+        MAP_LENGTH = (int)MAP_CIZE.x / GRID_WIDTH;
         parent = GameObject.Find("Map");
         posCache = Vector3.zero;
     }
@@ -29,11 +35,15 @@ public class MapMgr : Singleton<MapMgr>
         {
             mapDic = new Dictionary<MapIndex, Map>()
             {
-                { MapIndex.Up, new Map(MapIndex.Up, new MapLayerInfo{ begin = 0, end = LAYER_PER_MAP})},
-                { MapIndex.Middle, new Map(MapIndex.Middle, new MapLayerInfo{ begin = LAYER_PER_MAP + 1, end = LAYER_PER_MAP * 2})},
-                { MapIndex.Down, new Map(MapIndex.Down, new MapLayerInfo{ begin = LAYER_PER_MAP * 2 + 1, end = LAYER_PER_MAP * 3})},
+                { MapIndex.Up, new Map(MapIndex.Up, new MapLayerInfo{ begin = 0, end = MAP_WIDTH})},
+                { MapIndex.Middle, new Map(MapIndex.Middle, new MapLayerInfo{ begin = MAP_WIDTH + 1, end = MAP_WIDTH * 2})},
+                { MapIndex.Down, new Map(MapIndex.Down, new MapLayerInfo{ begin = MAP_WIDTH * 2 + 1, end = MAP_WIDTH * 3})},
             };
             parent.transform.position = new Vector3(0, ORIGIN_POS_Y, 0);
+            foreach (Map map in mapDic.Values)
+            {
+                map.UpdateMap();
+            }
         }
     }
 
@@ -63,12 +73,13 @@ public class MapMgr : Singleton<MapMgr>
                 mapDic[MapIndex.Down] = cache;
                 mapDic[MapIndex.Down].mapIndex = MapIndex.Down;
                 //更新位置及数据
-                posCache.y = mapDic[MapIndex.Middle].entity.transform.localPosition.y - MapMgr.Instance.MAP_CIZE.y;
+                posCache.y = mapDic[MapIndex.Middle].entity.transform.localPosition.y - MapMgr.Instance.MAP_CIZE.y * GRID_WIDTH;
                 mapDic[MapIndex.Down].entity.transform.localPosition = posCache;
                 mapDic[MapIndex.Down].layerInfo.begin = mapDic[MapIndex.Middle].layerInfo.end + 1;
-                mapDic[MapIndex.Down].layerInfo.end = mapDic[MapIndex.Middle].layerInfo.end + LAYER_PER_MAP;
+                mapDic[MapIndex.Down].layerInfo.end = mapDic[MapIndex.Middle].layerInfo.end + MAP_WIDTH;
+                mapDic[MapIndex.Down].UpdateMap();
             }
-            else if(middleLayerInfo.begin > LAYER_PER_MAP + 1 && layer < middleLayerInfo.begin && playerLayerCache >= middleLayerInfo.begin)
+            else if(middleLayerInfo.begin > MAP_WIDTH + 1 && layer < middleLayerInfo.begin && playerLayerCache >= middleLayerInfo.begin)
             {
                 //更换索引
                 var cache = mapDic[MapIndex.Down];
@@ -79,18 +90,20 @@ public class MapMgr : Singleton<MapMgr>
                 mapDic[MapIndex.Up] = cache;
                 mapDic[MapIndex.Up].mapIndex = MapIndex.Up;
                 //更新位置及数据
-                posCache.y = mapDic[MapIndex.Middle].entity.transform.localPosition.y + MapMgr.Instance.MAP_CIZE.y;
+                posCache.y = mapDic[MapIndex.Middle].entity.transform.localPosition.y + MapMgr.Instance.MAP_CIZE.y * GRID_WIDTH;
                 mapDic[MapIndex.Up].entity.transform.localPosition = posCache;
-                mapDic[MapIndex.Up].layerInfo.begin = mapDic[MapIndex.Middle].layerInfo.begin - LAYER_PER_MAP;
+                mapDic[MapIndex.Up].layerInfo.begin = mapDic[MapIndex.Middle].layerInfo.begin - MAP_WIDTH;
                 mapDic[MapIndex.Up].layerInfo.end = mapDic[MapIndex.Middle].layerInfo.begin - 1;
+                mapDic[MapIndex.Up].UpdateMap();
             }
         }
         playerLayerCache = layer;
     }
-}
 
-public struct MapLayerInfo
-{
-    public int begin;
-    public int end;
+    public TileBase GetTileBaseById(int id)
+    {
+        MineralC config = ConfigMgr.Instance.GetMineralById(id);
+        TileBase tileBase = Resources.Load<TileBase>($"Tiles/tile_{config.id}");
+        return tileBase;
+    }
 }
