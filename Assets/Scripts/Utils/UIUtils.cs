@@ -28,8 +28,3 @@ public class UIUtils : Singleton<UIUtils>
         UIMgr.Instance.OpenView<TipPopView>(args);
     }
 }
-
-public enum TipType
-{
-    Info = 1,   //游戏介绍
-}

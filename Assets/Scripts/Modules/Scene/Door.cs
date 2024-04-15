@@ -13,11 +13,11 @@ public class Door : MonoBehaviour
         {
             if (type == DoorType.Home)
             {
-                SceneMgr.Instance.EnterHomeMap();
+                SceneMgr.Instance.EnterHomeScene();
             }
             else if (type == DoorType.Mine)
             {
-                SceneMgr.Instance.EnterMineMap();
+                SceneMgr.Instance.EnterMineScene();
             }
         }
     }

@@ -7,8 +7,9 @@ public class Player : Singleton<Player>
 {
     private GameObject parent;
     public GameObject entity;
-    private Rigidbody2D uRigidbody;
-    private Animator uAnimator;
+    private SpriteRenderer mySprite;
+    private Rigidbody2D myRigidbody;
+    private Animator myAnimator;
     private CapsuleCollider2D myCollider ;
     private BoxCollider2D footCollider;
 
@@ -38,15 +39,18 @@ public class Player : Singleton<Player>
     public void Init()
     {
         //实例化实体
-        entity = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Scene/Player"), parent.transform);
+        entity = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Player/Player"), parent.transform);
         //初始化组件
-        uRigidbody = entity.GetComponent<Rigidbody2D>();
-        uAnimator = entity.GetComponent<Animator>();
+        mySprite = entity.GetComponent<SpriteRenderer>();
+        myRigidbody = entity.GetComponent<Rigidbody2D>();
+        myAnimator = entity.GetComponent<Animator>();
         myCollider = entity.GetComponent<CapsuleCollider2D>();
         footCollider = entity.GetComponent<BoxCollider2D>();
         //加载摄像机
         var camera = GameObject.Find("Follow Camera").GetComponent<CinemachineVirtualCamera>();
         camera.Follow = entity.transform;
+        //变更层级
+        mySprite.sortingOrder = (int)OrderInLayer.Player;
 
         isInit = true;
     }
@@ -75,18 +79,18 @@ public class Player : Singleton<Player>
     void Flip()
     {
         //判断X轴有无速度
-        bool playerHasXAxisSpeed = Mathf.Abs(uRigidbody.velocity.x) > Mathf.Epsilon;
+        bool playerHasXAxisSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
         if (playerHasXAxisSpeed)
         {
             //如果方向往右不需要翻转
-            if (uRigidbody.velocity.x > 0.1f)
+            if (myRigidbody.velocity.x > 0.1f)
             {
                 entity.transform.localRotation = Quaternion.Euler(0, 0, 0);
                 //顺便翻转朝向
                 lookDirection = new Vector2(1, 0);
             }
             //如果往左则翻转
-            if (uRigidbody.velocity.x < -0.1f)
+            if (myRigidbody.velocity.x < -0.1f)
             {
                 entity.transform.localRotation = Quaternion.Euler(0, 180, 0);
                 //顺便翻转朝向
@@ -102,12 +106,12 @@ public class Player : Singleton<Player>
         float moveDirection = Input.GetAxis("Horizontal");
 
         //移动速度
-        Vector2 playerVelocity = new Vector2(moveDirection * runSpeed * speedRate, uRigidbody.velocity.y);
-        uRigidbody.velocity = playerVelocity;
+        Vector2 playerVelocity = new Vector2(moveDirection * runSpeed * speedRate, myRigidbody.velocity.y);
+        myRigidbody.velocity = playerVelocity;
 
         //判断X轴有无速度
-        bool playerHasXAxisSpeed = Mathf.Abs(uRigidbody.velocity.x) > Mathf.Epsilon;
-        uAnimator.SetBool("Run", playerHasXAxisSpeed);
+        bool playerHasXAxisSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
+        myAnimator.SetBool("Run", playerHasXAxisSpeed);
 
     }
 
@@ -118,18 +122,18 @@ public class Player : Singleton<Player>
         {
             if (isGround)
             {
-                uAnimator.SetBool("Jump", true);
+                myAnimator.SetBool("Jump", true);
                 Vector2 jumpVelocity = new Vector2(0.0f, jumpForce * jumpRate);
-                uRigidbody.velocity = Vector2.up * jumpVelocity;
+                myRigidbody.velocity = Vector2.up * jumpVelocity;
                 canDoubleJump = true;
             }
             else
             {
                 if (canDoubleJump)
                 {
-                    uAnimator.SetBool("DoubleJump", true);
+                    myAnimator.SetBool("DoubleJump", true);
                     Vector2 doubleJumpVelocity = new Vector2(0.0f, doubleJumpForce);
-                    uRigidbody.velocity = Vector2.up * doubleJumpVelocity;
+                    myRigidbody.velocity = Vector2.up * doubleJumpVelocity;
                     canDoubleJump = false;
                 }
             }
@@ -139,41 +143,49 @@ public class Player : Singleton<Player>
     //切换
     void SwitchAnimation()
     {
-        uAnimator.SetBool("Idle", false);
-        if (uAnimator.GetBool("Jump"))
+        myAnimator.SetBool("Idle", false);
+        if (myAnimator.GetBool("Jump"))
         {
             //当速度下降到最大值开始下落
-            if (uRigidbody.velocity.y < 0.0f)
+            if (myRigidbody.velocity.y < 0.0f)
             {
-                uAnimator.SetBool("Jump", false);
-                uAnimator.SetBool("Fall", true);
+                myAnimator.SetBool("Jump", false);
+                myAnimator.SetBool("Fall", true);
             }
         }
         else if (isGround)
         {
-            uAnimator.SetBool("Fall", false);
-            uAnimator.SetBool("Idle", true);
+            myAnimator.SetBool("Fall", false);
+            myAnimator.SetBool("Idle", true);
         }
         //二段跳判断
-        if (uAnimator.GetBool("DoubleJump"))
+        if (myAnimator.GetBool("DoubleJump"))
         {
             //当速度下降到最大值开始下落
-            if (uRigidbody.velocity.y < 0.0f)
+            if (myRigidbody.velocity.y < 0.0f)
             {
-                uAnimator.SetBool("DoubleJump", false);
-                uAnimator.SetBool("DoubleFall", true);
+                myAnimator.SetBool("DoubleJump", false);
+                myAnimator.SetBool("DoubleFall", true);
             }
         }
         else if (isGround)
         {
-            uAnimator.SetBool("DoubleFall", false);
-            uAnimator.SetBool("Idle", true);
+            myAnimator.SetBool("DoubleFall", false);
+            myAnimator.SetBool("Idle", true);
         }
     }
     #endregion
 
-    #region 碰撞
-    
-    #endregion
+    #region 状态修改
+    public void SetPos(Vector3 pos)
+    {
+        entity.transform.position = pos;
+    }
 
+    public void ReseState()
+    {
+        myRigidbody.velocity = Vector3.zero;
+        myAnimator.SetBool("Idle", true);
+    }
+    #endregion
 }

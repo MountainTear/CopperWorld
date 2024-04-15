@@ -98,14 +98,3 @@ public class UIMgr : Singleton<UIMgr>
         return default(T);
     }
 }
-
-/// <summary>
-/// 分层类型
-/// </summary>
-public enum UILayer
-{
-    //界面
-    View,
-    //弹窗
-    Tip
-}

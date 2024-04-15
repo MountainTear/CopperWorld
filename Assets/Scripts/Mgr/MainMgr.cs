@@ -33,8 +33,8 @@ public class MainMgr : MonoBehaviour
         gameState = GameState.GameIn;
         //加载背景音乐
         AudioMgr.Instance.BgGameInAudio();
-        //进入家地图
-        SceneMgr.Instance.EnterHomeMap();
+        //进入家场景
+        SceneMgr.Instance.EnterHomeScene();
     }
 
     private void Update()
@@ -44,11 +44,4 @@ public class MainMgr : MonoBehaviour
             SceneMgr.Instance.Update();
         }
     }
-}
-
-public enum GameState
-{
-    GameBegin = 1,
-    GameIn = 2, 
-    GameOver = 3,
 }
