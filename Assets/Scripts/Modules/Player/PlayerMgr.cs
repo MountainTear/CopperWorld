@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class PlayerMgr : Singleton<PlayerMgr>
 {
-    public Dictionary<SceneType, Vector3> ORIGIN_POS;  //在场景的初始位置
+    public Vector3 ORIGIN_POS;  //初始位置
+    public Dictionary<SceneType, Vector3> SCENE_CHANGE_POS;  //切换场景的位置
     public bool isPlayerInit = false;
+    public bool isSetOriginPos = false;
 
     public PlayerMgr()
     {
-        ORIGIN_POS = new Dictionary<SceneType, Vector3>
+        ORIGIN_POS = new Vector3(0, -2.95f, 0);
+        SCENE_CHANGE_POS = new Dictionary<SceneType, Vector3>
         {
-            { SceneType.Home, new Vector3(0, -2.95f, 0)},
-            { SceneType.Mine, new Vector3(0, -2.95f, 0)},
+            { SceneType.Home, new Vector3(11.5f, -2.95f, 0)},
+            { SceneType.Mine, new Vector3(-11.5f, -2.95f, 0)},
         };
     }
 
@@ -31,11 +34,31 @@ public class PlayerMgr : Singleton<PlayerMgr>
     }
 
     #region 玩家设置
-    public void ResetOriginPos()
+    public void ResetPos()
     {
         SceneType sceneType = SceneMgr.Instance.sceneType;
-        Player.Instance.SetPos(ORIGIN_POS[sceneType]);
+        if (!isSetOriginPos)
+        {
+            Player.Instance.SetPos(ORIGIN_POS);
+            isSetOriginPos = true;
+        }
+        else
+        {
+            Player.Instance.SetPos(SCENE_CHANGE_POS[sceneType]);
+        }
         Player.Instance.ReseState();
+    }
+
+    public void SetCameraEnable(bool enable)
+    {
+        if (!isPlayerInit)
+        {
+            return;
+        }
+        if (Player.Instance.camera.enabled != enable)
+        {
+            Player.Instance.camera.enabled = enable;
+        }
     }
     #endregion
 

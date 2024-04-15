@@ -12,6 +12,7 @@ public class Player : Singleton<Player>
     private Animator myAnimator;
     private CapsuleCollider2D myCollider ;
     private BoxCollider2D footCollider;
+    public CinemachineVirtualCamera camera;
 
     private bool isInit;
     //移动速度
@@ -47,7 +48,7 @@ public class Player : Singleton<Player>
         myCollider = entity.GetComponent<CapsuleCollider2D>();
         footCollider = entity.GetComponent<BoxCollider2D>();
         //加载摄像机
-        var camera = GameObject.Find("Follow Camera").GetComponent<CinemachineVirtualCamera>();
+        camera = GameObject.Find("Follow Camera").GetComponent<CinemachineVirtualCamera>();
         camera.Follow = entity.transform;
         //变更层级
         mySprite.sortingOrder = (int)OrderInLayer.Player;
@@ -186,6 +187,11 @@ public class Player : Singleton<Player>
     {
         myRigidbody.velocity = Vector3.zero;
         myAnimator.SetBool("Idle", true);
+        myAnimator.SetBool("Jump", false);
+        myAnimator.SetBool("Fall", false);
+        myAnimator.SetBool("DoubleJump", false);
+        myAnimator.SetBool("DoubleFall", false);
+        myAnimator.Play("Idle");
     }
     #endregion
 }

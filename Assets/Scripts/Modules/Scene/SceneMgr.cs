@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class SceneMgr : Singleton<SceneMgr>
 {
@@ -22,7 +23,7 @@ public class SceneMgr : Singleton<SceneMgr>
         sceneType = SceneType.Home;
         MapMgr.Instance.InitMap();
         MapMgr.Instance.UpdateMapShow();
-        PlayerMgr.Instance.ResetOriginPos();
+        PlayerMgr.Instance.ResetPos();
     }
 
     public void EnterMineScene()
@@ -35,7 +36,7 @@ public class SceneMgr : Singleton<SceneMgr>
     {
         sceneType = SceneType.Mine;
         MapMgr.Instance.UpdateMapShow();
-        PlayerMgr.Instance.ResetOriginPos();
+        PlayerMgr.Instance.ResetPos();
     }
     #endregion
 
@@ -52,6 +53,7 @@ public class SceneMgr : Singleton<SceneMgr>
 
     IEnumerator LoadScene(SceneType sceneType)
     {
+        PlayerMgr.Instance.SetCameraEnable(false); //防止切换场景的摄像机突变
         string sceneName = MapTypeToSceneName(sceneType);
         UIUtils.Instance.SetLoading(true);
         // 异步加载场景
@@ -62,6 +64,7 @@ public class SceneMgr : Singleton<SceneMgr>
             yield return null;
         }
         // 执行加载完成后的操作
+        PlayerMgr.Instance.SetCameraEnable(true);
         UIUtils.Instance.SetLoading(false);
         LoadSceneCallback(sceneType);
     }
