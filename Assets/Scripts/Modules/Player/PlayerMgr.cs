@@ -11,8 +11,8 @@ public class PlayerMgr : Singleton<PlayerMgr>
     {
         ORIGIN_POS = new Dictionary<SceneType, Vector3>
         {
-            { SceneType.Home, new Vector3(0, -2.45f, 0)},
-            { SceneType.Mine, new Vector3(0, -3.45f, 0)},
+            { SceneType.Home, new Vector3(0, -2.95f, 0)},
+            { SceneType.Mine, new Vector3(0, -2.95f, 0)},
         };
     }
 
