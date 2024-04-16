@@ -46,7 +46,7 @@ public enum MapIndex
 
 public enum GridType
 {
-    Air = 1,
+    Air = 1,    //默认值为Air，枚举的第一个变量
     Mineral = 2,
     Monster = 3,
 }
@@ -55,4 +55,10 @@ public enum SpecialMineralId
 {
     Stone = 1,
     Soil = 2,
+}
+
+public enum GenearateType
+{
+    Monster = 1,
+    Mineral = 2,
 }

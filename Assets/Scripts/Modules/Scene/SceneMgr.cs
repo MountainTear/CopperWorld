@@ -99,15 +99,3 @@ public class SceneMgr : Singleton<SceneMgr>
         }
     }
 }
-
-public struct MapLayerInfo
-{
-    public int begin;
-    public int end;
-}
-
-public struct GridInfo
-{
-    GridType gridType;
-    int id;
-}

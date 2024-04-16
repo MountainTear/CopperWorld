@@ -1,4 +1,5 @@
 {
+  "_comment": "说明，总存在区域为28*10",
   "mineralList": [
     {
       "id": 1,
@@ -7,12 +8,12 @@
       "tile": "tile_1",
       "rateList":[
         {
-          "value":0.2,
-          "num":1
+          "value":0.5,
+          "num":5
         },
         {
-          "value":0.1,
-          "num":2
+          "value":0.3,
+          "num":3
         }
       ]
     },
@@ -26,8 +27,40 @@
     {
       "id": 3,
       "name": "黄铁矿",
-      "layer": [21, 100],
+      "layer": [21, 50],
       "tile": "tile_3",
+      "rateList":[
+        {
+          "value":0.2,
+          "num":1
+        },
+        {
+          "value":0.1,
+          "num":2
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "铜矿",
+      "layer": [21, 100],
+      "tile": "tile_4",
+      "rateList":[
+        {
+          "value":0.2,
+          "num":1
+        },
+        {
+          "value":0.1,
+          "num":2
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "铝矿",
+      "layer": [51, 0],
+      "tile": "tile_5",
       "rateList":[
         {
           "value":0.2,

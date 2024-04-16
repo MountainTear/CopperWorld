@@ -1,10 +1,11 @@
 {
+  "_comment": "说明，可供怪物存在区域为28*8，请勿超出该大小",
   "monsterList": [
     {
       "id": 1,
-      "name": "A",
+      "name": "爬行怪",
       "layer": [1, 20],
-      "size": [2,4],
+      "size": [4,2],
       "rateList":[
         {
           "value":0.2,
@@ -18,9 +19,9 @@
     },
     {
       "id": 2,
-      "name": "B",
-      "layer": [21, 40],
-      "size": [3,5],
+      "name": "飞行怪",
+      "layer": [10, 0],
+      "size": [4,4],
       "rateList":[
         {
           "value":0.2,
