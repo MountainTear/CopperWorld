@@ -80,6 +80,7 @@ public class Map
                 gridInfoDic[CommonUtil.Instance.XYToKey(x,y)] = new GridInfo() { type = GridType.Air, id = 0};
             }
         }
+        tilemap.ClearAllTiles();
     }
 
     private void GenerarateWall()
@@ -118,22 +119,26 @@ public class Map
                 int width = config.size[0];
                 int height = config.size[1];
                 int id = config.id;
-                if (!HasEnoughSpacePlaceMonster(width, height))
+                for (int i = 0; i < target.num; i++)
                 {
-                    break;
-                }
-                bool isPlaced = false;
-                while (!isPlaced)
-                {
-                    // 随机选择怪物的起始位置，以左上角为起始点放置，最边上一圈不能放置Monster
-                    int startX = Random.Range(GetXMin() + 1, GetXMax() - width);
-                    int startY = Random.Range(GetYMin() + height, GetYMax() - 1);
-
-                    // 检查是否可以在这个位置放置怪物
-                    if (CanPlaceMonster(startX, startY, width, height))
+                    if (!HasEnoughSpacePlaceMonster(width, height))
                     {
-                        PlaceMonster(startX, startY, width, height, id);
-                        isPlaced = true;
+                        break;
+                    }
+
+                    bool isPlaced = false;
+                    while (!isPlaced)
+                    {
+                        // 随机选择怪物的起始位置，以左上角为起始点放置，最边上一圈不能放置Monster
+                        int startX = Random.Range(GetXMin() + 1, GetXMax() - width);
+                        int startY = Random.Range(GetYMin() + height, GetYMax() - 1);
+
+                        // 检查是否可以在这个位置放置怪物
+                        if (CanPlaceMonster(startX, startY, width, height))
+                        {
+                            PlaceMonster(startX, startY, width, height, id);
+                            isPlaced = true;
+                        }
                     }
                 }
             }
@@ -160,23 +165,26 @@ public class Map
             {
                 var config = ConfigMgr.Instance.GetMineralById(target.id);
                 int id = config.id;
-                if (!HasEnoughSpacePlaceMineral())
+                for (int i = 0; i < target.num; i++)
                 {
-                    break;
-                }
-
-                bool isPlaced = false;
-                while (!isPlaced)
-                {
-                    // 随机选择矿物的位置
-                    int x = Random.Range(GetXMin() + 1, GetXMax() - 1);
-                    int y = Random.Range(GetYMin(), GetYMax());
-
-                    // 检查是否可以在这个位置放置
-                    if (gridInfoDic[CommonUtil.Instance.XYToKey(x,y)].type == GridType.Air)
+                    if (!HasEnoughSpacePlaceMineral())
                     {
-                        PlaceMineral(x, y, id);
-                        isPlaced = true;
+                        break;
+                    }
+
+                    bool isPlaced = false;
+                    while (!isPlaced)
+                    {
+                        // 随机选择矿物的位置
+                        int x = Random.Range(GetXMin() + 1, GetXMax() - 1);
+                        int y = Random.Range(GetYMin(), GetYMax());
+
+                        // 检查是否可以在这个位置放置
+                        if (gridInfoDic[CommonUtil.Instance.XYToKey(x, y)].type == GridType.Air)
+                        {
+                            PlaceMineral(x, y, id);
+                            isPlaced = true;
+                        }
                     }
                 }
             }

@@ -35,7 +35,7 @@ public class MapMgr : Singleton<MapMgr>
         {
             mapDic = new Dictionary<MapIndex, Map>()
             {
-                { MapIndex.Up, new Map(MapIndex.Up, new MapLayerInfo{ begin = 0, end = MAP_HEIGHT})},
+                { MapIndex.Up, new Map(MapIndex.Up, new MapLayerInfo{ begin = 1, end = MAP_HEIGHT})},
                 { MapIndex.Middle, new Map(MapIndex.Middle, new MapLayerInfo{ begin = MAP_HEIGHT + 1, end = MAP_HEIGHT * 2})},
                 { MapIndex.Down, new Map(MapIndex.Down, new MapLayerInfo{ begin = MAP_HEIGHT * 2 + 1, end = MAP_HEIGHT * 3})},
             };
