@@ -14,7 +14,7 @@ public class PlayerMgr : Singleton<PlayerMgr>
     public bool isPlayerInit = false;
     public bool isSetOriginPos = false;
     public Vector3 posCache;
-    public PlayerState state;
+    public PlayerMode mode;
 
     public PlayerMgr()
     {
@@ -33,7 +33,7 @@ public class PlayerMgr : Singleton<PlayerMgr>
         if (!isPlayerInit)
         {
             Player.Instance.Init();
-            state = PlayerState.Normal;
+            mode = PlayerMode.Attack;
             isPlayerInit = true;
         }
     }
@@ -81,12 +81,12 @@ public class PlayerMgr : Singleton<PlayerMgr>
         cameraRange.transform.position = posCache;
     }
 
-    public void ChangeState(PlayerState stateTarget)
+    public void ChangeMode(PlayerMode modeTarget)
     {
-        if (state != stateTarget)
+        if (mode != modeTarget)
         {
             //Player.Instance.UpdateStateShow(stateTarget);
-            state = stateTarget;
+            mode = modeTarget;
         }
     }
     #endregion

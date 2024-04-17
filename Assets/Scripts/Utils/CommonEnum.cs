@@ -43,13 +43,10 @@ public enum CharacterState
     Float,
 }
 
-public enum PlayerState
+public enum PlayerMode
 {
-    None = 0,   //用于初始化更换
-    Normal = 1,
-    Attack = 2,
-    Mine = 3,
-    Good = 4,
+    Attack = 1,
+    Mine = 2,
 }
 
 public enum FlipType

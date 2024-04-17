@@ -291,28 +291,6 @@ public class Player : Singleton<Player>
     #endregion
 
     #region 状态获取和修改
-    /// <summary>
-    /// 换肤，暂时屏蔽该功能
-    /// </summary>
-    /// <param name="state"></param>
-    public void UpdateStateShow(PlayerState state)
-    {
-        if (state == PlayerState.Attack)
-        {
-            animationHandle.skeletonAnimation.initialSkinName = "weapon/sword";
-        }
-        else if (state == PlayerState.Mine)
-        {
-            animationHandle.skeletonAnimation.initialSkinName = "weapon/morningstar";
-        }
-        else if(state == PlayerState.Normal || state == PlayerState.Good)
-        {
-            animationHandle.skeletonAnimation.initialSkinName = "default";
-        }
-        skeletonAnimation.Initialize(true);
-        HandleStateChanged();
-    }
-
     public void SetPos(Vector3 pos)
     {
         entity.transform.position = pos;
