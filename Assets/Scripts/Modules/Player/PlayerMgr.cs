@@ -14,14 +14,15 @@ public class PlayerMgr : Singleton<PlayerMgr>
     public bool isPlayerInit = false;
     public bool isSetOriginPos = false;
     public Vector3 posCache;
+    public PlayerState state;
 
     public PlayerMgr()
     {
-        ORIGIN_POS = new Vector3(0, -2.95f, 0);
+        ORIGIN_POS = new Vector3(0, -4f, 0);
         SCENE_CHANGE_POS = new Dictionary<SceneType, Vector3>
         {
-            { SceneType.Home, new Vector3(11.5f, -2.95f, 0)},
-            { SceneType.Mine, new Vector3(-11.5f, -2.95f, 0)},
+            { SceneType.Home, new Vector3(11.5f, -4f, 0)},
+            { SceneType.Mine, new Vector3(-11.5f, -4f, 0)},
         };
         cameraRange = GameObject.Find("CameraRange");
         posCache = Vector3.zero;
@@ -32,13 +33,17 @@ public class PlayerMgr : Singleton<PlayerMgr>
         if (!isPlayerInit)
         {
             Player.Instance.Init();
+            state = PlayerState.Normal;
             isPlayerInit = true;
         }
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
-        Player.Instance.Update();
+        if (isPlayerInit)
+        {
+            Player.Instance.FixedUpdate();
+        }
     }
 
     #region 玩家设置
@@ -54,7 +59,6 @@ public class PlayerMgr : Singleton<PlayerMgr>
         {
             Player.Instance.SetPos(SCENE_CHANGE_POS[sceneType]);
         }
-        Player.Instance.ReseState();
     }
 
     public void SetCameraEnable(bool enable)
@@ -75,6 +79,15 @@ public class PlayerMgr : Singleton<PlayerMgr>
         float originY = ORIGIN_POS.y;
         posCache.y = posY < originY ? posY - originY : 0;
         cameraRange.transform.position = posCache;
+    }
+
+    public void ChangeState(PlayerState stateTarget)
+    {
+        if (state != stateTarget)
+        {
+            Player.Instance.UpdateStateShow(stateTarget);
+            state = stateTarget;
+        }
     }
     #endregion
 

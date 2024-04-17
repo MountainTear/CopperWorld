@@ -556,8 +556,8 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -15, y: 5}
-      - {x: 15, y: 5}
+    - - {x: -15, y: 4.9}
+      - {x: 15, y: 4.9}
       - {x: 15, y: -5}
       - {x: -15, y: -5}
   m_UseDelaunayMesh: 0

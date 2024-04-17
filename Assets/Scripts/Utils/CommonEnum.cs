@@ -31,6 +31,33 @@ public enum SceneType
     Mine = 2,
 }
 
+public enum CharacterState
+{
+    None,
+    Idle,
+    Walk,
+    Run,
+    Rise,
+    Fall,
+    Attack,
+    Float,
+}
+
+public enum PlayerState
+{
+    None = 0,   //用于初始化更换
+    Normal = 1,
+    Attack = 2,
+    Mine = 3,
+    Good = 4,
+}
+
+public enum FlipType
+{
+    Left = 1,
+    Right = 2,
+}
+
 public enum DoorType
 {
     Home = 1,

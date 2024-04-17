@@ -88,7 +88,6 @@ public class SceneMgr : Singleton<SceneMgr>
 
     public void Update()
     {
-        PlayerMgr.Instance.Update();
         if (sceneType == SceneType.Home)
         {
             
@@ -97,5 +96,10 @@ public class SceneMgr : Singleton<SceneMgr>
             PlayerMgr.Instance.UpdatePlayerLayer();
             PlayerMgr.Instance.UpdateCameraRange();
         }
+    }
+
+    public void FixedUpdate()
+    {
+        PlayerMgr.Instance.FixedUpdate();
     }
 }

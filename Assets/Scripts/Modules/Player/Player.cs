@@ -2,39 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using Spine.Unity;
+using Spine;
 
 public class Player : Singleton<Player>
 {
     private GameObject parent;
     public GameObject entity;
-    private SpriteRenderer mySprite;
     private Rigidbody2D myRigidbody;
-    private Animator myAnimator;
-    private CapsuleCollider2D myCollider ;
+    private CapsuleCollider2D myCollider;
     private BoxCollider2D footCollider;
     public CinemachineVirtualCamera camera;
+    private SkeletonAnimationHandle animationHandle;
+    private SkeletonAnimation skeletonAnimation;
 
-    private bool isInit;
+    //输入
+    private string xAxis = "Horizontal";
+    private string yAxis = "Vertical";
+    private string jumpButton = "Jump";
+    private string attackButton = "Attack";
+    private string floatButton = "Float";
+    //缓存
+    private Vector2 input;
+    private Vector2 velocity;
     //移动速度
-    public float runSpeed = 10.0f;
-    //跳跃能力
-    public float jumpForce = 7.0f;
-    public float doubleJumpForce = 3.0f;
-    //bool 条件
-    //是否在地面
-    private bool isGround;
-    //能否二段跳
-    public bool canDoubleJump;
-    //朝向
-    public Vector2 lookDirection;
-    //影响移动比例
-    public float speedRate = 1;
-    public float jumpRate = 1;
+    private float walkToRun = 0.6f; //输入从走变为跑的突变值
+    private float walkSpeed = 5f;
+    private float runSpeed = 9f;
+    //跳跃
+    private float minimumJumpEndTime;   //跳跃停止时间戳
+    private float jumpSpeed = 7.0f; //跳跃力
+    private float minimumJumpDuration = 0.5f;    //最长跳跃时间
+    private float jumpInterruptFactor = 0.5f;    //跳跃力衰减系数
+    private float gravityScale = 1f;   //重力缩放
+    //浮空
+    private float floatSpeed = 7.0f; //浮空力
+    //地面判断
+    private bool isGrounded;
+    private bool wasGrounded;
+    //状态
+    private CharacterState previousState, currentState;
+    bool isInFloat;   //浮空
+    bool isInAttack;  //攻击
 
     public Player()
     {
         parent = GameObject.Find("Player");
-        isInit = false;
     }
 
     public void Init()
@@ -42,156 +55,240 @@ public class Player : Singleton<Player>
         //实例化实体
         entity = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/Player/Player"), parent.transform);
         //初始化组件
-        mySprite = entity.GetComponent<SpriteRenderer>();
         myRigidbody = entity.GetComponent<Rigidbody2D>();
-        myAnimator = entity.GetComponent<Animator>();
         myCollider = entity.GetComponent<CapsuleCollider2D>();
         footCollider = entity.GetComponent<BoxCollider2D>();
+        animationHandle = entity.GetComponent<SkeletonAnimationHandle>();
+        skeletonAnimation = animationHandle.skeletonAnimation;
         //加载摄像机
         camera = GameObject.Find("Follow Camera").GetComponent<CinemachineVirtualCamera>();
         camera.Follow = entity.transform;
         //变更层级
-        mySprite.sortingOrder = (int)OrderInLayer.Player;
-
-        isInit = true;
+        skeletonAnimation.transform.GetComponent<MeshRenderer>().sortingOrder = (int)OrderInLayer.Player;
+        //初始化变量
+        wasGrounded = false;
+        input = Vector2.zero;
+        velocity = Vector2.zero;
+        minimumJumpEndTime = 0;
+        isInFloat = false;
+        isInAttack = false;
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
-        if (!isInit)
-        {
-            return;
-        }
-        Flip();
-        Run();
-        Jump();
         CheckGround();
-        SwitchAnimation();
+        UpdateCharacter();
     }
 
     #region 角色控制
-    //检测是否在地面
-    void CheckGround()
+    private void CheckGround()
     {
-        isGround = footCollider.IsTouchingLayers(LayerMask.GetMask("Ground"));
+        isGrounded = footCollider.IsTouchingLayers(LayerMask.GetMask("Ground"));
+    }
+    private bool IsInSpecialState()
+    {
+        return isInAttack || isInFloat;
     }
 
-    //翻转移动方向
-    void Flip()
+    private void UpdateCharacter()
     {
-        //判断X轴有无速度
-        bool playerHasXAxisSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
-        if (playerHasXAxisSpeed)
+        float dt = Time.deltaTime;
+
+        input.x = Input.GetAxis(xAxis);
+        input.y = Input.GetAxis(yAxis);
+        bool inputJumpStop = Input.GetButtonUp(jumpButton);
+        bool inputJumpStart = Input.GetButtonDown(jumpButton);
+        bool inputAttckStop = Input.GetButtonUp(attackButton);
+        bool inputAttckStart = Input.GetButtonDown(attackButton);
+        bool inputFloatStop = Input.GetButtonUp(floatButton);
+        bool inputFloatStart = Input.GetButtonDown(floatButton);
+
+        bool doJumpInterrupt = false;   //打断跳跃
+        bool doJump = false;    //跳跃
+
+        //逻辑处理
+        if (isGrounded)
         {
-            //如果方向往右不需要翻转
-            if (myRigidbody.velocity.x > 0.1f)
+            if (IsInSpecialState())
             {
-                entity.transform.localRotation = Quaternion.Euler(0, 0, 0);
-                //顺便翻转朝向
-                lookDirection = new Vector2(1, 0);
-            }
-            //如果往左则翻转
-            if (myRigidbody.velocity.x < -0.1f)
-            {
-                entity.transform.localRotation = Quaternion.Euler(0, 180, 0);
-                //顺便翻转朝向
-                lookDirection = new Vector2(-1, 0);
-            }
-        }
-    }
-
-    //左右移动
-    void Run()
-    {
-        //获取移动方向
-        float moveDirection = Input.GetAxis("Horizontal");
-
-        //移动速度
-        Vector2 playerVelocity = new Vector2(moveDirection * runSpeed * speedRate, myRigidbody.velocity.y);
-        myRigidbody.velocity = playerVelocity;
-
-        //判断X轴有无速度
-        bool playerHasXAxisSpeed = Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon;
-        myAnimator.SetBool("Run", playerHasXAxisSpeed);
-
-    }
-
-    //跳跃
-    void Jump()
-    {
-        if (Input.GetButtonDown("Jump"))
-        {
-            if (isGround)
-            {
-                myAnimator.SetBool("Jump", true);
-                Vector2 jumpVelocity = new Vector2(0.0f, jumpForce * jumpRate);
-                myRigidbody.velocity = Vector2.up * jumpVelocity;
-                canDoubleJump = true;
+                //结束攻击
+                if (inputAttckStop && isInAttack)
+                {
+                    isInAttack = false;
+                }
             }
             else
             {
-                if (canDoubleJump)
+                //跳跃>浮空>攻击
+                //开始跳跃
+                if (inputJumpStart)
                 {
-                    myAnimator.SetBool("DoubleJump", true);
-                    Vector2 doubleJumpVelocity = new Vector2(0.0f, doubleJumpForce);
-                    myRigidbody.velocity = Vector2.up * doubleJumpVelocity;
-                    canDoubleJump = false;
+                    doJump = true;
+                }
+                //开始浮空
+                if ((!doJump) && inputFloatStart && !isInFloat)
+                {
+                    //这里需要判断是否能浮空
+                    isInFloat = true;
+                }
+                //开始攻击
+                if ((!doJump && !isInFloat) && inputAttckStart && !isInFloat)
+                {
+                    isInAttack = true;
                 }
             }
         }
+        else
+        {
+            //开始打断跳跃
+            doJumpInterrupt = inputJumpStop && Time.time < minimumJumpEndTime;
+
+            //结束浮空
+            if (inputFloatStop && isInFloat)
+            {
+                isInFloat = false;
+                //这里需要调用结束浮空函数
+            }
+
+        }
+
+        //受力处理
+        Vector2 gravityDeltaVelocity = Physics2D.gravity * gravityScale * dt;
+        if (doJump)
+        {
+            velocity.y = jumpSpeed;
+            minimumJumpEndTime = Time.time + minimumJumpDuration;
+        }else if (doJumpInterrupt)
+        {
+            if (velocity.y > 0)
+                velocity.y *= jumpInterruptFactor;
+        }else if (isInFloat)
+        {
+            velocity.y = floatSpeed;
+        }
+
+        velocity.x = 0;
+        if (input.x != 0)
+        {
+            velocity.x = Mathf.Abs(input.x) > walkToRun ? runSpeed : walkSpeed;
+            velocity.x *= Mathf.Sign(input.x);
+        }
+        if (!isGrounded)
+        {
+            if (wasGrounded)
+            {
+                if (velocity.y < 0)
+                    velocity.y = 0;
+            }
+            else
+            {
+                velocity += gravityDeltaVelocity;
+            }
+        }
+
+        //移动处理
+        if (velocity.x != 0 || velocity.y != 0)
+        {
+            myRigidbody.MovePosition(myRigidbody.position + velocity * dt);
+        }
+        wasGrounded = isGrounded;
+
+        //动画状态处理
+        if (IsInSpecialState())
+        {
+            if (isInAttack)
+            {
+                currentState = CharacterState.Attack;
+            }else if (isInFloat)
+            {
+                currentState = CharacterState.Float;
+            }
+        }
+        else
+        {
+            if (isGrounded)
+            {
+                if (input.x == 0)
+                    currentState = CharacterState.Idle;
+                else
+                    currentState = Mathf.Abs(input.x) > walkToRun ? CharacterState.Run : CharacterState.Walk;
+            }
+            else
+            {
+                currentState = velocity.y > 0 ? CharacterState.Rise : CharacterState.Fall;
+            }
+        }
+        bool stateChanged = previousState != currentState;
+        previousState = currentState;
+        if (stateChanged)
+            HandleStateChanged();
+
+        //处理朝向
+        if (input.x != 0)
+            animationHandle.SetFlip(input.x);
     }
 
-    //切换
-    void SwitchAnimation()
+    private void HandleStateChanged()
     {
-        myAnimator.SetBool("Idle", false);
-        if (myAnimator.GetBool("Jump"))
+        string stateName = null;
+        switch (currentState)
         {
-            //当速度下降到最大值开始下落
-            if (myRigidbody.velocity.y < 0.0f)
-            {
-                myAnimator.SetBool("Jump", false);
-                myAnimator.SetBool("Fall", true);
-            }
+            case CharacterState.Idle:
+                stateName = "idle";
+                break;
+            case CharacterState.Walk:
+                stateName = "walk";
+                break;
+            case CharacterState.Run:
+                stateName = "run";
+                break;
+            case CharacterState.Rise:
+                stateName = "rise";
+                break;
+            case CharacterState.Fall:
+                stateName = "fall";
+                break;
+            case CharacterState.Attack:
+                stateName = "attack";
+                break;
+            case CharacterState.Float:
+                stateName = "float";
+                break;
+            default:
+                break;
         }
-        else if (isGround)
-        {
-            myAnimator.SetBool("Fall", false);
-            myAnimator.SetBool("Idle", true);
-        }
-        //二段跳判断
-        if (myAnimator.GetBool("DoubleJump"))
-        {
-            //当速度下降到最大值开始下落
-            if (myRigidbody.velocity.y < 0.0f)
-            {
-                myAnimator.SetBool("DoubleJump", false);
-                myAnimator.SetBool("DoubleFall", true);
-            }
-        }
-        else if (isGround)
-        {
-            myAnimator.SetBool("DoubleFall", false);
-            myAnimator.SetBool("Idle", true);
-        }
+
+        animationHandle.PlayAnimationForState(stateName, 0);
     }
     #endregion
 
-    #region 状态修改
+    #region 状态获取和修改
+    public void UpdateStateShow(PlayerState state)
+    {
+        if (state == PlayerState.Attack)
+        {
+            animationHandle.skeletonAnimation.initialSkinName = "weapon/sword";
+        }
+        else if (state == PlayerState.Mine)
+        {
+            animationHandle.skeletonAnimation.initialSkinName = "weapon/morningstar";
+        }
+        else if(state == PlayerState.Normal || state == PlayerState.Good)
+        {
+            animationHandle.skeletonAnimation.initialSkinName = "default";
+        }
+        skeletonAnimation.Initialize(true);
+        HandleStateChanged();
+    }
+
     public void SetPos(Vector3 pos)
     {
         entity.transform.position = pos;
     }
 
-    public void ReseState()
+    public FlipType GetFlipType()
     {
-        myRigidbody.velocity = Vector3.zero;
-        myAnimator.SetBool("Idle", true);
-        myAnimator.SetBool("Jump", false);
-        myAnimator.SetBool("Fall", false);
-        myAnimator.SetBool("DoubleJump", false);
-        myAnimator.SetBool("DoubleFall", false);
-        myAnimator.Play("Idle");
+        return skeletonAnimation.Skeleton.ScaleX == 1.0f ? FlipType.Right : FlipType.Left;
     }
     #endregion
 }

@@ -44,4 +44,12 @@ public class MainMgr : MonoBehaviour
             SceneMgr.Instance.Update();
         }
     }
+
+    private void FixedUpdate()
+    {
+        if (gameState == GameState.GameIn)
+        {
+            SceneMgr.Instance.FixedUpdate();
+        }
+    }
 }
