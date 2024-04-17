@@ -22,6 +22,11 @@ public class Player : Singleton<Player>
     private string jumpButton = "Jump";
     private string attackButton = "Attack";
     private string floatButton = "Float";
+    private bool jumpCache;
+    private bool attackCache;
+    private bool floatCache;
+    private List<string> buttonNames;
+    private Dictionary<string, bool[]> buttonStateList;     //0是cache，1是stop，2是start
     //缓存
     private Vector2 input;
     private Vector2 velocity;
@@ -70,6 +75,16 @@ public class Player : Singleton<Player>
         input = Vector2.zero;
         velocity = Vector2.zero;
         minimumJumpEndTime = 0;
+        jumpCache = false;
+        attackCache = false;
+        floatCache = false;
+        buttonNames = new List<string>() { jumpButton, attackButton, floatButton };
+        buttonStateList = new Dictionary<string, bool[]>
+        {
+            { buttonNames[0], new bool[]{ false, false, false} },
+            { buttonNames[1], new bool[]{ false, false, false} },
+            { buttonNames[2], new bool[]{ false, false, false} },
+        };
         isInFloat = false;
         isInAttack = false;
     }
@@ -96,12 +111,27 @@ public class Player : Singleton<Player>
 
         input.x = Input.GetAxis(xAxis);
         input.y = Input.GetAxis(yAxis);
-        bool inputJumpStop = Input.GetButtonUp(jumpButton);
-        bool inputJumpStart = Input.GetButtonDown(jumpButton);
-        bool inputAttckStop = Input.GetButtonUp(attackButton);
-        bool inputAttckStart = Input.GetButtonDown(attackButton);
-        bool inputFloatStop = Input.GetButtonUp(floatButton);
-        bool inputFloatStart = Input.GetButtonDown(floatButton);
+        
+        //避免FixedUpdate
+        foreach(string name in buttonNames)
+        {
+            bool buttonNew = Input.GetButton(name);
+            bool buttonCache = buttonStateList[name][0];
+            if (buttonNew != buttonCache)
+            {
+                if (buttonCache)
+                {
+                    buttonStateList[name][1] = true;
+                    buttonStateList[name][2] = false;
+                }
+                else
+                {
+                    buttonStateList[name][2] = true;
+                    buttonStateList[name][1] = false;
+                }
+                buttonStateList[name][0] = buttonNew;
+            }
+        }
 
         bool doJumpInterrupt = false;   //打断跳跃
         bool doJump = false;    //跳跃
@@ -112,8 +142,9 @@ public class Player : Singleton<Player>
             if (IsInSpecialState())
             {
                 //结束攻击
-                if (inputAttckStop && isInAttack)
+                if (buttonStateList[attackButton][1] && isInAttack)
                 {
+                    Debug.Log("B");
                     isInAttack = false;
                 }
             }
@@ -121,19 +152,20 @@ public class Player : Singleton<Player>
             {
                 //跳跃>浮空>攻击
                 //开始跳跃
-                if (inputJumpStart)
+                if (buttonStateList[jumpButton][2])
                 {
                     doJump = true;
                 }
                 //开始浮空
-                if ((!doJump) && inputFloatStart && !isInFloat)
+                if ((!doJump) && buttonStateList[floatButton][2] && !isInFloat)
                 {
                     //这里需要判断是否能浮空
                     isInFloat = true;
                 }
                 //开始攻击
-                if ((!doJump && !isInFloat) && inputAttckStart && !isInFloat)
+                if ((!doJump && !isInFloat) && buttonStateList[attackButton][2] && !isInFloat)
                 {
+                    Debug.Log("A");
                     isInAttack = true;
                 }
             }
@@ -141,10 +173,10 @@ public class Player : Singleton<Player>
         else
         {
             //开始打断跳跃
-            doJumpInterrupt = inputJumpStop && Time.time < minimumJumpEndTime;
+            doJumpInterrupt = buttonStateList[jumpButton][1] && Time.time < minimumJumpEndTime;
 
             //结束浮空
-            if (inputFloatStop && isInFloat)
+            if (buttonStateList[floatButton][1] && isInFloat)
             {
                 isInFloat = false;
                 //这里需要调用结束浮空函数
