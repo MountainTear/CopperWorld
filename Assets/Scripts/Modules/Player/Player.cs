@@ -22,9 +22,6 @@ public class Player : Singleton<Player>
     private string jumpButton = "Jump";
     private string attackButton = "Attack";
     private string floatButton = "Float";
-    private bool jumpCache;
-    private bool attackCache;
-    private bool floatCache;
     private List<string> buttonNames;
     private Dictionary<string, bool[]> buttonStateList;     //0是cache，1是stop，2是start
     //缓存
@@ -32,7 +29,7 @@ public class Player : Singleton<Player>
     private Vector2 velocity;
     //移动速度
     private float walkToRun = 0.6f; //输入从走变为跑的突变值
-    private float walkSpeed = 5f;
+    private float walkSpeed = 9f;   //暂时屏蔽走动
     private float runSpeed = 9f;
     //跳跃
     private float minimumJumpEndTime;   //跳跃停止时间戳
@@ -75,9 +72,6 @@ public class Player : Singleton<Player>
         input = Vector2.zero;
         velocity = Vector2.zero;
         minimumJumpEndTime = 0;
-        jumpCache = false;
-        attackCache = false;
-        floatCache = false;
         buttonNames = new List<string>() { jumpButton, attackButton, floatButton };
         buttonStateList = new Dictionary<string, bool[]>
         {
@@ -144,7 +138,6 @@ public class Player : Singleton<Player>
                 //结束攻击
                 if (buttonStateList[attackButton][1] && isInAttack)
                 {
-                    Debug.Log("B");
                     isInAttack = false;
                 }
             }
@@ -165,7 +158,6 @@ public class Player : Singleton<Player>
                 //开始攻击
                 if ((!doJump && !isInFloat) && buttonStateList[attackButton][2] && !isInFloat)
                 {
-                    Debug.Log("A");
                     isInAttack = true;
                 }
             }
@@ -175,10 +167,11 @@ public class Player : Singleton<Player>
             //开始打断跳跃
             doJumpInterrupt = buttonStateList[jumpButton][1] && Time.time < minimumJumpEndTime;
 
-            //结束浮空
+            //结束浮空，视做打断跳跃
             if (buttonStateList[floatButton][1] && isInFloat)
             {
                 isInFloat = false;
+                doJumpInterrupt = true;
                 //这里需要调用结束浮空函数
             }
 
@@ -200,10 +193,13 @@ public class Player : Singleton<Player>
         }
 
         velocity.x = 0;
-        if (input.x != 0)
+        if (!isInAttack)    //攻击时不允许移动
         {
-            velocity.x = Mathf.Abs(input.x) > walkToRun ? runSpeed : walkSpeed;
-            velocity.x *= Mathf.Sign(input.x);
+            if (input.x != 0)
+            {
+                velocity.x = Mathf.Abs(input.x) > walkToRun ? runSpeed : walkSpeed;
+                velocity.x *= Mathf.Sign(input.x);
+            }
         }
         if (!isGrounded)
         {
@@ -268,8 +264,8 @@ public class Player : Singleton<Player>
             case CharacterState.Idle:
                 stateName = "idle";
                 break;
-            case CharacterState.Walk:
-                stateName = "walk";
+            case CharacterState.Walk:   //暂时屏蔽走动动画
+                stateName = "run";
                 break;
             case CharacterState.Run:
                 stateName = "run";
@@ -295,6 +291,10 @@ public class Player : Singleton<Player>
     #endregion
 
     #region 状态获取和修改
+    /// <summary>
+    /// 换肤，暂时屏蔽该功能
+    /// </summary>
+    /// <param name="state"></param>
     public void UpdateStateShow(PlayerState state)
     {
         if (state == PlayerState.Attack)

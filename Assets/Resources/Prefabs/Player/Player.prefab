@@ -292,7 +292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonDataAsset: {fileID: 11400000, guid: 453255cfcaffb7d45a2a213fa9441ed1, type: 2}
-  initialSkinName: 
+  initialSkinName: weapon/sword
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
   initialFlipY: 0

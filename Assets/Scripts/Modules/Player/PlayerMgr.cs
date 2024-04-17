@@ -85,7 +85,7 @@ public class PlayerMgr : Singleton<PlayerMgr>
     {
         if (state != stateTarget)
         {
-            Player.Instance.UpdateStateShow(stateTarget);
+            //Player.Instance.UpdateStateShow(stateTarget);
             state = stateTarget;
         }
     }
