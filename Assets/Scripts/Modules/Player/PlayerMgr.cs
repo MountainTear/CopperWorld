@@ -110,6 +110,7 @@ public class PlayerMgr : Singleton<PlayerMgr>
         {
             mode = modeTarget;
             UIMgr.Instance.GetView<MainUIView>().UpdateMode();
+            Player.Instance.UpdateStateShow();
         }
     }
 

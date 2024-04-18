@@ -4,6 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using Spine.Unity;
 using Spine;
+using UnityEngine.Playables;
 
 public class Player : Singleton<Player>
 {
@@ -303,6 +304,27 @@ public class Player : Singleton<Player>
     public FlipType GetFlipType()
     {
         return skeletonAnimation.Skeleton.ScaleX == 1.0f ? FlipType.Right : FlipType.Left;
+    }
+    #endregion
+
+    #region 测试，后续需要删除
+    /// <summary>
+    /// 换肤，暂时屏蔽该功能
+    /// </summary>
+    /// <param name="state"></param>
+    public void UpdateStateShow()
+    {
+        PlayerMode mode = PlayerMgr.Instance.mode;
+        if (mode == PlayerMode.Attack)
+        {
+            animationHandle.skeletonAnimation.initialSkinName = "weapon/sword";
+        }
+        else if (mode == PlayerMode.Mine)
+        {
+            animationHandle.skeletonAnimation.initialSkinName = "weapon/morningstar";
+        }
+        skeletonAnimation.Initialize(true);
+        HandleStateChanged();
     }
     #endregion
 }
