@@ -34,7 +34,7 @@ public class TipPopView : ViewBase
 
         btn_closecr.onClick.AddListener(OnCloseClick);
 
-        UpdateInfo();
+        UpdateView();
    }
     #endregion
 
@@ -43,7 +43,7 @@ public class TipPopView : ViewBase
         Close();
     }
 
-    private void UpdateInfo()
+    private void UpdateView()
     {
         TipC desc = ConfigMgr.Instance.GetTipById(type);
         text_titlecr.text = desc.title;

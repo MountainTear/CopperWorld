@@ -15,6 +15,10 @@ public class PlayerMgr : Singleton<PlayerMgr>
     public bool isSetOriginPos = false;
     public Vector3 posCache;
     public PlayerMode mode;
+    public int healthCurrent;
+    public int healthMax = 100;
+    public int oxygenCurrent;
+    public int oxygenMax = 100;
 
     public PlayerMgr()
     {
@@ -34,6 +38,8 @@ public class PlayerMgr : Singleton<PlayerMgr>
         {
             Player.Instance.Init();
             mode = PlayerMode.Attack;
+            UIMgr.Instance.OpenView<MainUIView>();
+            RecoverState();
             isPlayerInit = true;
         }
     }
@@ -81,19 +87,48 @@ public class PlayerMgr : Singleton<PlayerMgr>
         cameraRange.transform.position = posCache;
     }
 
+    public void TryChangeMode()
+    {
+        if (Player.Instance.isInUseWeapon)
+        {
+            return;
+        }
+        PlayerMode modeTarget = PlayerMode.Attack;
+        if (mode == PlayerMode.Attack)
+        {
+            modeTarget = PlayerMode.Mine;
+        }else if (mode == PlayerMode.Mine)
+        {
+            modeTarget = PlayerMode.Attack;
+        }
+        ChangeMode(modeTarget);
+    }
+
     public void ChangeMode(PlayerMode modeTarget)
     {
         if (mode != modeTarget)
         {
-            //Player.Instance.UpdateStateShow(stateTarget);
             mode = modeTarget;
+            UIMgr.Instance.GetView<MainUIView>().UpdateMode();
         }
+    }
+
+    public void RecoverState()
+    {
+        healthCurrent = healthMax;
+        oxygenCurrent = oxygenMax;
+        UIMgr.Instance.GetView<MainUIView>().UpdateHealth();
+        UIMgr.Instance.GetView<MainUIView>().UpdateOxygen();
     }
     #endregion
 
     #region 玩家信息获取
     public int GetLayer()
     {
+        if (!isPlayerInit)
+        {
+            return 0;
+        }
         int layer = 0;
         float posY = Player.Instance.entity.transform.position.y;
         int originY = MapMgr.Instance.ORIGIN_POS_Y;
@@ -107,6 +142,18 @@ public class PlayerMgr : Singleton<PlayerMgr>
     public void UpdatePlayerLayer()
     {
         MapMgr.Instance.OnPlayerLayerChange();
+    }
+
+    public CharacterState ModeToCharacterState()
+    {
+        if (mode == PlayerMode.Attack)
+        {
+            return CharacterState.Attack;
+        }else if (mode == PlayerMode.Mine)
+        {
+            return CharacterState.Mine;
+        }
+        return CharacterState.None;
     }
     #endregion
 }

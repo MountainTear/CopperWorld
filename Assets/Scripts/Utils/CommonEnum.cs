@@ -40,6 +40,7 @@ public enum CharacterState
     Rise,
     Fall,
     Attack,
+    Mine,
     Float,
 }
 

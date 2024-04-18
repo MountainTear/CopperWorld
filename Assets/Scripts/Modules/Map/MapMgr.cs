@@ -96,6 +96,7 @@ public class MapMgr : Singleton<MapMgr>
                 mapDic[MapIndex.Up].layerInfo.end = mapDic[MapIndex.Middle].layerInfo.begin - 1;
                 mapDic[MapIndex.Up].UpdateMap();
             }
+            UIMgr.Instance.GetView<MainUIView>().UpdateLayer();
         }
         playerLayerCache = layer;
     }

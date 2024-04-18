@@ -42,6 +42,7 @@ public class MainMgr : MonoBehaviour
         if (gameState == GameState.GameIn)
         {
             SceneMgr.Instance.Update();
+            CheckInput();
         }
     }
 
@@ -50,6 +51,14 @@ public class MainMgr : MonoBehaviour
         if (gameState == GameState.GameIn)
         {
             SceneMgr.Instance.FixedUpdate();
+        }
+    }
+
+    public void CheckInput()
+    {
+        if (Input.GetButtonUp("ChangeMode"))
+        {
+            PlayerMgr.Instance.TryChangeMode();
         }
     }
 }

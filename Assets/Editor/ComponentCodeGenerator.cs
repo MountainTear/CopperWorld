@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 public class ComponentCodeGenerator : EditorWindow
 {
-    [MenuItem("Assets/¸ù¾İPrefabÉú³É´úÂë/Éú³É×é¼ş¶¨Òå", false, 10)]
+    [MenuItem("Assets/æ ¹æ®Prefabç”Ÿæˆä»£ç /ç”Ÿæˆç»„ä»¶å®šä¹‰", false, 10)]
     public static string GenerateComponentDefinitions()
     {
         string str = "";
@@ -31,13 +31,13 @@ public class ComponentCodeGenerator : EditorWindow
             }
 
             EditorGUIUtility.systemCopyBuffer = sb.ToString();
-            Debug.Log($"×é¼ş¶¨Òå´úÂëÒÑ¸´ÖÆµ½¼ôÇĞ°å¡£{selectedGameObject.name}");
+            Debug.Log($"ç»„ä»¶å®šä¹‰ä»£ç å·²å¤åˆ¶åˆ°å‰ªåˆ‡æ¿ã€‚{selectedGameObject.name}");
             str += sb;
         }
         return str;
     }
 
-    [MenuItem("Assets/¸ù¾İPrefabÉú³É´úÂë/Éú³É×é¼ş»ñÈ¡", false, 11)]
+    [MenuItem("Assets/æ ¹æ®Prefabç”Ÿæˆä»£ç /ç”Ÿæˆç»„ä»¶è·å–", false, 11)]
     public static string GenerateComponentGetters()
     {
         string str = "";
@@ -65,13 +65,13 @@ public class ComponentCodeGenerator : EditorWindow
             }
 
             EditorGUIUtility.systemCopyBuffer = sb.ToString();
-            Debug.Log($"×é¼ş»ñÈ¡´úÂëÒÑ¸´ÖÆµ½¼ôÇĞ°å¡£{selectedGameObject.name}");
+            Debug.Log($"ç»„ä»¶è·å–ä»£ç å·²å¤åˆ¶åˆ°å‰ªåˆ‡æ¿ã€‚{selectedGameObject.name}");
             str += sb;
         }
         return str;
     }
 
-    [MenuItem("Assets/¸ù¾İPrefabÉú³É´úÂë/Éú³É°´Å¥ÏìÓ¦×¢²á", false, 12)]
+    [MenuItem("Assets/æ ¹æ®Prefabç”Ÿæˆä»£ç /ç”ŸæˆæŒ‰é’®å“åº”æ³¨å†Œ", false, 12)]
     public static string GenerateButtonListeners()
     {
         string str = "";
@@ -92,13 +92,13 @@ public class ComponentCodeGenerator : EditorWindow
             }
 
             EditorGUIUtility.systemCopyBuffer = sb.ToString();
-            Debug.Log($"°´Å¥ÏìÓ¦×¢²á´úÂëÒÑ¸´ÖÆµ½¼ôÇĞ°å¡£{selectedGameObject.name}");
+            Debug.Log($"æŒ‰é’®å“åº”æ³¨å†Œä»£ç å·²å¤åˆ¶åˆ°å‰ªåˆ‡æ¿ã€‚{selectedGameObject.name}");
             str += sb;
         }
         return str;
     }
 
-    [MenuItem("Assets/¸ù¾İPrefabÉú³É´úÂë/Éú³É°´Å¥ÏìÓ¦º¯Êı", false, 13)]
+    [MenuItem("Assets/æ ¹æ®Prefabç”Ÿæˆä»£ç /ç”ŸæˆæŒ‰é’®å“åº”å‡½æ•°", false, 13)]
     public static string GenerateButtonResponseMethods()
     {
         string str = "";
@@ -128,13 +128,13 @@ public class ComponentCodeGenerator : EditorWindow
             }
 
             EditorGUIUtility.systemCopyBuffer = sb.ToString();
-            Debug.Log($"°´Å¥ÏìÓ¦º¯Êı´úÂëÒÑ¸´ÖÆµ½¼ôÇĞ°å¡£{selectedGameObject.name}");
+            Debug.Log($"æŒ‰é’®å“åº”å‡½æ•°ä»£ç å·²å¤åˆ¶åˆ°å‰ªåˆ‡æ¿ã€‚{selectedGameObject.name}");
             str += sb;
         }
         return str;
     }
 
-    // ¸¨Öú·½·¨£¬ÓÃÓÚ»ñÈ¡GameObjectµÄÂ·¾¶
+    // è¾…åŠ©æ–¹æ³•ï¼Œç”¨äºè·å–GameObjectçš„è·¯å¾„
     static string GetGameObjectPath(Transform transform, string rootPath)
     {
         string path = transform.name;
@@ -149,7 +149,7 @@ public class ComponentCodeGenerator : EditorWindow
         return path;
     }
 
-    // ¸¨Öú·½·¨£¬ÓÃÓÚ¸ù¾İ×é¼şÀàĞÍ»ñÈ¡¶ÔÓ¦µÄC#ÀàĞÍÃû³Æ
+    // è¾…åŠ©æ–¹æ³•ï¼Œç”¨äºæ ¹æ®ç»„ä»¶ç±»å‹è·å–å¯¹åº”çš„C#ç±»å‹åç§°
     static string GetComponentTypeName(string componentType)
     {
         switch (componentType)
@@ -157,12 +157,13 @@ public class ComponentCodeGenerator : EditorWindow
             case "btn": return "Button";
             case "text": return "TextMeshProUGUI";
             case "image": return "Image";
-            // ¿ÉÒÔÔÚÕâÀïÌí¼Ó¸ü¶àµÄ×é¼şÀàĞÍÓ³Éä
+            case "slider": return "Slider";
+            // å¯ä»¥åœ¨è¿™é‡Œæ·»åŠ æ›´å¤šçš„ç»„ä»¶ç±»å‹æ˜ å°„
             default: return null;
         }
     }
 
-    // ¸¨Öú·½·¨£¬ÓÃÓÚ½«×Ö·û´®µÄµÚÒ»¸ö×ÖÄ¸×ª»»Îª´óĞ´
+    // è¾…åŠ©æ–¹æ³•ï¼Œç”¨äºå°†å­—ç¬¦ä¸²çš„ç¬¬ä¸€ä¸ªå­—æ¯è½¬æ¢ä¸ºå¤§å†™
     static string UppercaseFirst(string s)
     {
         if (string.IsNullOrEmpty(s))

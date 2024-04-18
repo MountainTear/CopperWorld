@@ -20,7 +20,7 @@ public class Player : Singleton<Player>
     private string xAxis = "Horizontal";
     private string yAxis = "Vertical";
     private string jumpButton = "Jump";
-    private string attackButton = "Attack";
+    private string useWeaponButton = "UseWeapon";
     private string floatButton = "Float";
     private List<string> buttonNames;
     private Dictionary<string, bool[]> buttonStateList;     //0是cache，1是stop，2是start
@@ -44,8 +44,8 @@ public class Player : Singleton<Player>
     private bool wasGrounded;
     //状态
     private CharacterState previousState, currentState;
-    bool isInFloat;   //浮空
-    bool isInAttack;  //攻击
+    public bool isInFloat;   //浮空
+    public bool isInUseWeapon;  //使用武器
 
     public Player()
     {
@@ -72,7 +72,7 @@ public class Player : Singleton<Player>
         input = Vector2.zero;
         velocity = Vector2.zero;
         minimumJumpEndTime = 0;
-        buttonNames = new List<string>() { jumpButton, attackButton, floatButton };
+        buttonNames = new List<string>() { jumpButton, useWeaponButton, floatButton };
         buttonStateList = new Dictionary<string, bool[]>
         {
             { buttonNames[0], new bool[]{ false, false, false} },
@@ -80,7 +80,7 @@ public class Player : Singleton<Player>
             { buttonNames[2], new bool[]{ false, false, false} },
         };
         isInFloat = false;
-        isInAttack = false;
+        isInUseWeapon = false;
     }
 
     public void FixedUpdate()
@@ -96,7 +96,7 @@ public class Player : Singleton<Player>
     }
     private bool IsInSpecialState()
     {
-        return isInAttack || isInFloat;
+        return isInUseWeapon || isInFloat;
     }
 
     private void UpdateCharacter()
@@ -135,15 +135,15 @@ public class Player : Singleton<Player>
         {
             if (IsInSpecialState())
             {
-                //结束攻击
-                if (buttonStateList[attackButton][1] && isInAttack)
+                //结束使用武器
+                if (buttonStateList[useWeaponButton][1] && isInUseWeapon)
                 {
-                    isInAttack = false;
+                    isInUseWeapon = false;
                 }
             }
             else
             {
-                //跳跃>浮空>攻击
+                //跳跃>浮空>使用武器
                 //开始跳跃
                 if (buttonStateList[jumpButton][2])
                 {
@@ -155,10 +155,10 @@ public class Player : Singleton<Player>
                     //这里需要判断是否能浮空
                     isInFloat = true;
                 }
-                //开始攻击
-                if ((!doJump && !isInFloat) && buttonStateList[attackButton][2] && !isInFloat)
+                //开始使用武器
+                if ((!doJump && !isInFloat) && buttonStateList[useWeaponButton][2] && !isInFloat)
                 {
-                    isInAttack = true;
+                    isInUseWeapon = true;
                 }
             }
         }
@@ -193,7 +193,7 @@ public class Player : Singleton<Player>
         }
 
         velocity.x = 0;
-        if (!isInAttack)    //攻击时不允许移动
+        if (!isInUseWeapon)    //使用武器时不允许移动
         {
             if (input.x != 0)
             {
@@ -224,10 +224,11 @@ public class Player : Singleton<Player>
         //动画状态处理
         if (IsInSpecialState())
         {
-            if (isInAttack)
+            if (isInUseWeapon)
             {
-                currentState = CharacterState.Attack;
-            }else if (isInFloat)
+                currentState = PlayerMgr.Instance.ModeToCharacterState();
+            }
+            else if (isInFloat)
             {
                 currentState = CharacterState.Float;
             }
@@ -278,6 +279,9 @@ public class Player : Singleton<Player>
                 break;
             case CharacterState.Attack:
                 stateName = "attack";
+                break;
+            case CharacterState.Mine:
+                stateName = "attack";   //暂时用攻击代替
                 break;
             case CharacterState.Float:
                 stateName = "float";
