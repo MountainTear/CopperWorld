@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6b194f808b1af6499c93410e504af42, type: 3}
+  m_Name: dragon_Atlas
+  m_EditorClassIdentifier: 
+  textureLoadingMode: 0
+  onDemandTextureLoader: {fileID: 0}
+  atlasFile: {fileID: 4900000, guid: 2527a9eefdedd0343b78e9276ecccf72, type: 3}
+  materials:
+  - {fileID: 2100000, guid: 0ea6e3cb6fb5f314e873584137571453, type: 2}
+  - {fileID: 2100000, guid: 3bd3d81f56afe6d42b7c662cc1fc33a9, type: 2}
+  - {fileID: 2100000, guid: a6905f8c4463f80479300534dc0dec55, type: 2}
+  - {fileID: 2100000, guid: a28ebd6b00921c5448128c923687c87a, type: 2}
+  - {fileID: 2100000, guid: 3f09ce342507f82499927f3a49385bf7, type: 2}
+  - {fileID: 2100000, guid: 040019b2b7461e14999059a7e799eaab, type: 2}
