@@ -58,19 +58,19 @@ public class MainUIView : ViewBase
 
     public void UpdateHealth()
     {
-        slider_healthcr.value = PlayerMgr.Instance.healthCurrent / PlayerMgr.Instance.healthMax;
+        slider_healthcr.value = (float)PlayerMgr.Instance.healthCurrent / PlayerMgr.Instance.healthMax;
         text_healthcr.text = $"{PlayerMgr.Instance.healthCurrent}/{PlayerMgr.Instance.healthMax}";
     }
 
     public void UpdateOxygen()
     {
-        slider_oxygencr.value = PlayerMgr.Instance.oxygenCurrent / PlayerMgr.Instance.oxygenMax;
+        slider_oxygencr.value = (float)PlayerMgr.Instance.oxygenCurrent / PlayerMgr.Instance.oxygenMax;
         text_oxygencr.text = $"{PlayerMgr.Instance.oxygenCurrent}/{PlayerMgr.Instance.oxygenMax}";
     }
 
     public void UpdateLayer()
     {
-        text_layercr.text = $"当前层数：{PlayerMgr.Instance.GetLayer()}";
+        text_layercr.text = $"当前层数：\n{PlayerMgr.Instance.GetLayer()}";
     }
 
     public void UpdateMode()

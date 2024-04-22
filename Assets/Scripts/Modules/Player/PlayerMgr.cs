@@ -19,6 +19,7 @@ public class PlayerMgr : Singleton<PlayerMgr>
     public int healthMax = 100;
     public int oxygenCurrent;
     public int oxygenMax = 100;
+    public int damage = 1;
 
     public PlayerMgr()
     {
@@ -157,4 +158,13 @@ public class PlayerMgr : Singleton<PlayerMgr>
         return CharacterState.None;
     }
     #endregion
+
+    #region 玩家交互
+    public void TakeDamage(int damage)
+    {
+        healthCurrent -= damage;
+        UIMgr.Instance.GetView<MainUIView>().UpdateHealth();
+    }
+    #endregion
+
 }

@@ -12,6 +12,7 @@ public class MapMgr : Singleton<MapMgr>
     public int MAP_WIDTH;   //单个地图的宽度（格子数）
 
     public GameObject parent;
+    public GameObject monsterParent;
 
     private Dictionary<MapIndex, Map> mapDic;
     private Dictionary<int, TileBase> tileBaseDic;
@@ -26,6 +27,7 @@ public class MapMgr : Singleton<MapMgr>
         MAP_HEIGHT = (int)MAP_CIZE.y / GRID_WIDTH;
         MAP_WIDTH = (int)MAP_CIZE.x / GRID_WIDTH;
         parent = GameObject.Find("Map");
+        monsterParent = GameObject.Find("Monster");
         posCache = Vector3.zero;
     }
 

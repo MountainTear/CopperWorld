@@ -17,6 +17,7 @@ public class Map
     private static Vector3 posCache;
     private static Vector3Int tilePosCache;
     private static List<GenerateTarget> targetCache;
+    private List<GameObject> monsterList;
 
     public Map(MapIndex mapIndex, MapLayerInfo layerInfo)
     {
@@ -26,6 +27,7 @@ public class Map
         tilePosCache = Vector3Int.zero;
         gridInfoDic = new Dictionary<string, GridInfo>();
         targetCache = new List<GenerateTarget>();
+        monsterList = new List<GameObject>();
         Init();
     }
 
@@ -86,6 +88,10 @@ public class Map
             }
         }
         tilemap.ClearAllTiles();
+        foreach(var monster in monsterList)
+        {
+            GameObject.Destroy(monster);
+        }
     }
 
     private void GenerarateWall()
@@ -289,6 +295,10 @@ public class Map
                 gridInfo.time = 0;
             }
         }
+        var config = ConfigMgr.Instance.GetMonsterById(id);
+        var pos = new Vector3Int(startX + width / 2, startY - height / 2, 0);
+        var monster = GameObject.Instantiate(Resources.Load<GameObject>($"Prefabs/Monster/{config.prefab}"), tilemap.CellToWorld(pos), Quaternion.identity,MapMgr.Instance.monsterParent.transform);
+        monsterList.Add(monster);
     }
 
     private bool HasEnoughSpacePlaceMineral()

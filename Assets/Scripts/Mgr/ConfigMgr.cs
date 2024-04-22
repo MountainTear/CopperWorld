@@ -100,6 +100,7 @@ public class MonsterC
     public string name;
     public List<int> layer;
     public List<int> size;
+    public string prefab;
     public List<Rate> rateList;
 }
 

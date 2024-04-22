@@ -92,4 +92,5 @@ public enum SpecialTag
 {
     Weapon = 1,
     Map = 2,
+    Player = 3,
 }

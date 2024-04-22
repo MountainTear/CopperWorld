@@ -4,32 +4,34 @@
     {
       "id": 1,
       "name": "爬行怪",
-      "layer": [1, 100],
-      "size": [4,2],
-      "rateList":[
+      "layer": [ 1, 100 ],
+      "size": [ 4, 2 ],
+      "prefab": "EnemyCrawl",
+      "rateList": [
         {
-          "value":0.5,
-          "num":1
+          "value": 0.5,
+          "num": 1
         },
         {
-          "value":1,
-          "num":2
+          "value": 1,
+          "num": 2
         }
       ]
     },
     {
       "id": 2,
       "name": "飞行怪",
-      "layer": [101, 0],
-      "size": [4,4],
-      "rateList":[
+      "layer": [ 101, 0 ],
+      "size": [ 4, 4 ],
+      "prefab": "EnemyFly",
+      "rateList": [
         {
-          "value":0.5,
-          "num":1
+          "value": 0.5,
+          "num": 1
         },
         {
-          "value":0.1,
-          "num":2
+          "value": 0.1,
+          "num": 2
         }
       ]
     }
