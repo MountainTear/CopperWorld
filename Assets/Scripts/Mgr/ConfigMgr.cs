@@ -76,6 +76,7 @@ public class MineralC
     public string name;
     public List<int> layer;
     public string tile;
+    public float time;
     public List<Rate> rateList;
 }
 

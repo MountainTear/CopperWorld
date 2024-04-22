@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -7,7 +8,7 @@ public class Map
     public GameObject entity;
     private GameObject go_offsetcr;
     private SpriteRenderer image_bgcr;
-    private Tilemap tilemap;
+    public Tilemap tilemap;
     private TilemapRenderer tilemapRenderer;
 
     public MapIndex mapIndex;
@@ -43,6 +44,9 @@ public class Map
         //初始化位置
         InitParentPos();
         go_offsetcr.transform.localPosition = new Vector3(0, - MapMgr.Instance.MAP_CIZE.y / 2, 0);
+        //添加组件
+        var collision = tilemap.gameObject.AddComponent<TilemapCollision>();
+        collision.Init(this);
     }
 
     public void InitParentPos()
@@ -77,7 +81,8 @@ public class Map
         {
             for (int y = GetYMax(); y >= GetYMin(); y--)
             {
-                gridInfoDic[CommonUtil.Instance.XYToKey(x,y)] = new GridInfo() { type = GridType.Air, id = 0};
+                gridInfoDic[CommonUtil.Instance.XYToKey(x,y)] = new GridInfo(){};
+                ClearMineral(x, y);
             }
         }
         tilemap.ClearAllTiles();
@@ -281,6 +286,7 @@ public class Map
                 GridInfo gridInfo = gridInfoDic[CommonUtil.Instance.XYToKey(x, y)];
                 gridInfo.type = GridType.Monster;
                 gridInfo.id = id;
+                gridInfo.time = 0;
             }
         }
     }
@@ -305,9 +311,36 @@ public class Map
         GridInfo gridInfo = gridInfoDic[CommonUtil.Instance.XYToKey(x, y)];
         gridInfo.type = GridType.Mineral;
         gridInfo.id = id;
+        float time = ConfigMgr.Instance.GetMineralById(id).time;
+        gridInfo.time = time > 0 ? time : float.MaxValue;
         tilePosCache.x = x;
         tilePosCache.y = y;
         tilemap.SetTile(tilePosCache, MapMgr.Instance.GetTileBaseById(id));
+    }
+
+    public void ClearMineral(int x, int y)
+    {
+        GridInfo gridInfo = gridInfoDic[CommonUtil.Instance.XYToKey(x, y)];
+        gridInfo.type = GridType.Air;
+        gridInfo.id = 0;
+        gridInfo.time = 0;
+        tilePosCache.x = x;
+        tilePosCache.y = y;
+        tilemap.SetTile(tilePosCache, null);
+    }
+
+    public void MineMineral(int x, int y)
+    {
+        GridInfo gridInfo = gridInfoDic[CommonUtil.Instance.XYToKey(x, y)];
+        if (gridInfo.type == GridType.Mineral)
+        {
+            gridInfo.time -= TilemapCollision.MINE_INTERVAL;
+            if (gridInfo.time < 0)
+            {
+                //矿物获得
+                ClearMineral(x, y);
+            }
+        }
     }
     #endregion
 }

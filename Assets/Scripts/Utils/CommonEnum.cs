@@ -87,3 +87,9 @@ public enum GenearateType
     Monster = 1,
     Mineral = 2,
 }
+
+public enum SpecialTag
+{
+    Weapon = 1,
+    Map = 2,
+}

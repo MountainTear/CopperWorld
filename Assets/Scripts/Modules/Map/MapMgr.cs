@@ -126,6 +126,7 @@ public class GridInfo
 {
     public GridType type;
     public int id;
+    public float time;  //剩余需要挖掘时间
 }
 
 public class GenerateTarget

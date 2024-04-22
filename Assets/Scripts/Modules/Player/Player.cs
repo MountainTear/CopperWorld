@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using Spine.Unity;
-using Spine;
-using UnityEngine.Playables;
 
 public class Player : Singleton<Player>
 {
@@ -13,6 +11,7 @@ public class Player : Singleton<Player>
     private Rigidbody2D myRigidbody;
     private CapsuleCollider2D myCollider;
     private BoxCollider2D footCollider;
+    private BoxCollider2D weaponCollider;
     public CinemachineVirtualCamera camera;
     private SkeletonAnimationHandle animationHandle;
     private SkeletonAnimation skeletonAnimation;
@@ -28,16 +27,18 @@ public class Player : Singleton<Player>
     //缓存
     private Vector2 input;
     private Vector2 velocity;
+    private Vector3 scaleCache;
     //移动速度
     private float walkToRun = 0.6f; //输入从走变为跑的突变值
-    private float walkSpeed = 9f;   //暂时屏蔽走动
-    private float runSpeed = 9f;
+    private float walkSpeed = 7f;   //暂时屏蔽走动
+    private float runSpeed = 7f;
     //跳跃
     private float minimumJumpEndTime;   //跳跃停止时间戳
-    private float jumpSpeed = 7.0f; //跳跃力
+    private float jumpSpeed = 6.0f; //跳跃力
     private float minimumJumpDuration = 0.5f;    //最长跳跃时间
     private float jumpInterruptFactor = 0.5f;    //跳跃力衰减系数
     private float gravityScale = 1f;   //重力缩放
+    private float jumpXSpeed = 5f;   //跳跃横向移动速度
     //浮空
     private float floatSpeed = 7.0f; //浮空力
     //地面判断
@@ -62,6 +63,7 @@ public class Player : Singleton<Player>
         myCollider = entity.GetComponent<CapsuleCollider2D>();
         footCollider = entity.GetComponent<BoxCollider2D>();
         animationHandle = entity.GetComponent<SkeletonAnimationHandle>();
+        weaponCollider = entity.transform.Find("Weapon").GetComponent<BoxCollider2D>();
         skeletonAnimation = animationHandle.skeletonAnimation;
         //加载摄像机
         camera = GameObject.Find("Follow Camera").GetComponent<CinemachineVirtualCamera>();
@@ -69,9 +71,11 @@ public class Player : Singleton<Player>
         //变更层级
         skeletonAnimation.transform.GetComponent<MeshRenderer>().sortingOrder = (int)OrderInLayer.Player;
         //初始化变量
+        weaponCollider.enabled = false;
         wasGrounded = false;
         input = Vector2.zero;
         velocity = Vector2.zero;
+        scaleCache = Vector3.one;
         minimumJumpEndTime = 0;
         buttonNames = new List<string>() { jumpButton, useWeaponButton, floatButton };
         buttonStateList = new Dictionary<string, bool[]>
@@ -140,6 +144,7 @@ public class Player : Singleton<Player>
                 if (buttonStateList[useWeaponButton][1] && isInUseWeapon)
                 {
                     isInUseWeapon = false;
+                    weaponCollider.enabled = false;
                 }
             }
             else
@@ -160,6 +165,7 @@ public class Player : Singleton<Player>
                 if ((!doJump && !isInFloat) && buttonStateList[useWeaponButton][2] && !isInFloat)
                 {
                     isInUseWeapon = true;
+                    weaponCollider.enabled = true;
                 }
             }
         }
@@ -198,7 +204,10 @@ public class Player : Singleton<Player>
         {
             if (input.x != 0)
             {
-                velocity.x = Mathf.Abs(input.x) > walkToRun ? runSpeed : walkSpeed;
+                if (isGrounded)
+                    velocity.x = Mathf.Abs(input.x) > walkToRun ? runSpeed : walkSpeed;
+                else
+                    velocity.x = jumpXSpeed;
                 velocity.x *= Mathf.Sign(input.x);
             }
         }
@@ -255,7 +264,14 @@ public class Player : Singleton<Player>
 
         //处理朝向
         if (input.x != 0)
+        {
             animationHandle.SetFlip(input.x);
+            if (input.x * weaponCollider.transform.localScale.x < 0)
+            {
+                scaleCache.x = input.x > 0 ? 1f : -1f;
+                weaponCollider.transform.localScale = scaleCache;
+            }
+        }
     }
 
     private void HandleStateChanged()

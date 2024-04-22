@@ -6,6 +6,7 @@
       "name": "石头",
       "layer": [1, 0],
       "tile": "tile_1",
+      "time": 0,
       "rateList":[
         {
           "value":0.5,
@@ -22,6 +23,7 @@
       "name": "泥土",
       "layer": [1, 0],
       "tile": "tile_2",
+      "time": 0.5,
       "rateList":[]
     },
     {
@@ -29,6 +31,7 @@
       "name": "黄铁矿",
       "layer": [1, 200],
       "tile": "tile_3",
+      "time": 1,
       "rateList":[
         {
           "value":0.2,
@@ -49,6 +52,7 @@
       "name": "铜矿",
       "layer": [21, 100],
       "tile": "tile_4",
+      "time": 2,
       "rateList":[
         {
           "value":0.2,
@@ -69,6 +73,7 @@
       "name": "铝矿",
       "layer": [101, 0],
       "tile": "tile_5",
+      "time": 3,
       "rateList":[
         {
           "value":0.2,
