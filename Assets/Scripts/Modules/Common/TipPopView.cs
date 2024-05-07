@@ -28,7 +28,7 @@ public class TipPopView : ViewBase
     {
         base.OnShowing();
         Transform skinTrans = skin.transform;
-		text_titlecr = skinTrans.Find("image_bg/image_titleBg/text_titlecr").GetComponent<TextMeshProUGUI>();
+		text_titlecr = skinTrans.Find("image_bg/text_titlecr").GetComponent<TextMeshProUGUI>();
 		text_contentcr = skinTrans.Find("image_bg/text_contentcr").GetComponent<TextMeshProUGUI>();
         btn_closecr = skinTrans.Find("image_bg/btn_closecr").GetComponent<Button>();
 
