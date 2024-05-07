@@ -33,7 +33,7 @@ public class MainUIView : ViewBase
         slider_oxygencr = skinTrans.Find("go_state/slider_oxygencr").GetComponent<Slider>();
         text_oxygencr = skinTrans.Find("go_state/slider_oxygencr/text_oxygencr").GetComponent<TextMeshProUGUI>();
         text_modecr = skinTrans.Find("go_mode/text_modecr").GetComponent<TextMeshProUGUI>();
-        text_modeDesccr = skinTrans.Find("go_mode/Image/text_modeDesccr").GetComponent<TextMeshProUGUI>();
+        text_modeDesccr = skinTrans.Find("go_mode/text_modeDesccr").GetComponent<TextMeshProUGUI>();
         btn_packagecr = skinTrans.Find("btn_packagecr").GetComponent<Button>();
         text_layercr = skinTrans.Find("text_layercr").GetComponent<TextMeshProUGUI>();
 
