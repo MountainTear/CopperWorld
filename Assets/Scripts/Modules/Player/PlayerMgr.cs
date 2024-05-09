@@ -16,7 +16,7 @@ public class PlayerMgr : Singleton<PlayerMgr>
     public Vector3 posCache;
     public PlayerMode mode;
     public int healthCurrent;
-    public int healthMax = 100;
+    public int healthMax = 10;
     public int oxygenCurrent;
     public int oxygenMax = 100;
     public int damage = 1;
@@ -167,6 +167,10 @@ public class PlayerMgr : Singleton<PlayerMgr>
     {
         healthCurrent -= damage;
         UIMgr.Instance.GetView<MainUIView>().UpdateHealth();
+        if (healthCurrent <= 0)
+        {
+            UIMgr.Instance.OpenView<GameOverPopView>();
+        }
     }
 
     public void GetMineral(int id)
