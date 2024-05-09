@@ -21,6 +21,8 @@ public class PlayerMgr : Singleton<PlayerMgr>
     public int oxygenMax = 100;
     public int damage = 1;
 
+    public Dictionary<int, int> mineralList;
+
     public PlayerMgr()
     {
         ORIGIN_POS = new Vector3(0, -4f, 0);
@@ -31,6 +33,7 @@ public class PlayerMgr : Singleton<PlayerMgr>
         };
         cameraRange = GameObject.Find("CameraRange");
         posCache = Vector3.zero;
+        mineralList = new Dictionary<int, int>();
     }
 
     public void InitPlayer()
@@ -164,6 +167,19 @@ public class PlayerMgr : Singleton<PlayerMgr>
     {
         healthCurrent -= damage;
         UIMgr.Instance.GetView<MainUIView>().UpdateHealth();
+    }
+
+    public void GetMineral(int id)
+    {
+        int num = 0;
+        if (mineralList.ContainsKey(id))
+        {
+            num = mineralList[id];
+        }
+        else
+            mineralList.Add(id, 0);
+        num++;
+        mineralList[id] = num;
     }
     #endregion
 

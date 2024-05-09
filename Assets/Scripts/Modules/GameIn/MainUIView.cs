@@ -45,7 +45,7 @@ public class MainUIView : ViewBase
 
 	public void OnPackageClick()
 	{
-		// TODO: Add your button click handling logic here
+        UIMgr.Instance.OpenView<PackagePopView>();
 	}
 
     public void UpdateView()

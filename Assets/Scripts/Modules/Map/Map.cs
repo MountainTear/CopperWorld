@@ -347,7 +347,7 @@ public class Map
             gridInfo.time -= TilemapCollision.MINE_INTERVAL;
             if (gridInfo.time < 0)
             {
-                //矿物获得
+                PlayerMgr.Instance.GetMineral(gridInfo.id);
                 ClearMineral(x, y);
             }
         }
