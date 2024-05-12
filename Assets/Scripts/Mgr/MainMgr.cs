@@ -60,5 +60,9 @@ public class MainMgr : MonoBehaviour
         {
             PlayerMgr.Instance.TryChangeMode();
         }
+        if (Input.GetButtonUp("GoHome"))
+        {
+            SceneMgr.Instance.EnterHomeScene();
+        }
     }
 }
