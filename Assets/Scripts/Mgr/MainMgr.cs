@@ -62,7 +62,7 @@ public class MainMgr : MonoBehaviour
         }
         if (Input.GetButtonUp("GoHome"))
         {
-            SceneMgr.Instance.EnterHomeScene();
+            SceneMgr.Instance.EnterMineScene();
         }
     }
 }
