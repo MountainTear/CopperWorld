@@ -22,7 +22,7 @@ public class PlayerMgr : Singleton<PlayerMgr>
     public int damage = 1;
 
     public Dictionary<int, int> mineralList;    //key是矿物id，value是数量
-    public Dictionary<int, int> maxeralList;    //key是武器id，value是数量
+    public Dictionary<int, int> weaponList;    //key是武器id，value是数量
     public int money = 0;
     public int weapon = 0;  //正在使用的武器id
 
@@ -38,6 +38,7 @@ public class PlayerMgr : Singleton<PlayerMgr>
         cameraRange = GameObject.Find("CameraRange");
         posCache = Vector3.zero;
         mineralList = new Dictionary<int, int>();
+        weaponList = new Dictionary<int, int>();
     }
 
     public void InitPlayer()

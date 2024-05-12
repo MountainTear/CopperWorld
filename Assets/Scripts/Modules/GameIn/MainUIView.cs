@@ -13,6 +13,7 @@ public class MainUIView : ViewBase
     private TextMeshProUGUI text_modecr;
     private TextMeshProUGUI text_modeDesccr;
     private Button btn_packagecr;
+    private Button btn_weaponcr;
     private TextMeshProUGUI text_layercr;
 
 
@@ -35,9 +36,11 @@ public class MainUIView : ViewBase
         text_modecr = skinTrans.Find("go_mode/text_modecr").GetComponent<TextMeshProUGUI>();
         text_modeDesccr = skinTrans.Find("go_mode/text_modeDesccr").GetComponent<TextMeshProUGUI>();
         btn_packagecr = skinTrans.Find("btn_packagecr").GetComponent<Button>();
+        btn_weaponcr = skinTrans.Find("btn_weaponcr").GetComponent<Button>();
         text_layercr = skinTrans.Find("text_layercr").GetComponent<TextMeshProUGUI>();
 
         btn_packagecr.onClick.AddListener(OnPackageClick);
+        btn_weaponcr.onClick.AddListener(OnWeaponClick);
 
         UpdateView();
    }
@@ -47,6 +50,11 @@ public class MainUIView : ViewBase
 	{
         UIMgr.Instance.OpenView<PackagePopView>();
 	}
+
+    public void OnWeaponClick()
+    {
+        UIMgr.Instance.OpenView<WeaponPopView>();
+    }
 
     public void UpdateView()
     {
