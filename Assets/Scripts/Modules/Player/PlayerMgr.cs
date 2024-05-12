@@ -21,7 +21,11 @@ public class PlayerMgr : Singleton<PlayerMgr>
     public int oxygenMax = 100;
     public int damage = 1;
 
-    public Dictionary<int, int> mineralList;
+    public Dictionary<int, int> mineralList;    //key是矿物id，value是数量
+    public Dictionary<int, int> maxeralList;    //key是武器id，value是数量
+    public int money = 0;
+    public int weapon = 0;  //正在使用的武器id
+
 
     public PlayerMgr()
     {
@@ -159,6 +163,11 @@ public class PlayerMgr : Singleton<PlayerMgr>
             return CharacterState.Mine;
         }
         return CharacterState.None;
+    }
+
+    public int GetDamage()
+    {
+        return damage;
     }
     #endregion
 

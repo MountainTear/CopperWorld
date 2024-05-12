@@ -496,7 +496,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 559305886867739475, guid: 4b16c2c48ab73d940b18dd9e62db316a, type: 3}
       propertyPath: m_text
-      value: "NPC-\u8BA2\u5355"
+      value: "\u8BA2\u5355\u5546\u4EBA"
       objectReference: {fileID: 0}
     - target: {fileID: 559305886867739475, guid: 4b16c2c48ab73d940b18dd9e62db316a, type: 3}
       propertyPath: m_fontSize
@@ -505,7 +505,7 @@ PrefabInstance:
     - target: {fileID: 559305886867739475, guid: 4b16c2c48ab73d940b18dd9e62db316a, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: c93ed147a0b21d145b9f8b71e7c388aa, type: 2}
+      objectReference: {fileID: 11400000, guid: d6f6d1e10969c7846905bd0daac7b268, type: 2}
     - target: {fileID: 559305886867739475, guid: 4b16c2c48ab73d940b18dd9e62db316a, type: 3}
       propertyPath: m_fontColor.b
       value: 1
@@ -525,7 +525,7 @@ PrefabInstance:
     - target: {fileID: 559305886867739475, guid: 4b16c2c48ab73d940b18dd9e62db316a, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: -8752860582021788031, guid: c93ed147a0b21d145b9f8b71e7c388aa, type: 2}
+      objectReference: {fileID: -8636961163283610871, guid: d6f6d1e10969c7846905bd0daac7b268, type: 2}
     - target: {fileID: 559305886867739475, guid: 4b16c2c48ab73d940b18dd9e62db316a, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4294967295
@@ -541,7 +541,7 @@ PrefabInstance:
     - target: {fileID: 4416084734142778623, guid: 4b16c2c48ab73d940b18dd9e62db316a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: -8752860582021788031, guid: c93ed147a0b21d145b9f8b71e7c388aa, type: 2}
+      objectReference: {fileID: -8636961163283610871, guid: d6f6d1e10969c7846905bd0daac7b268, type: 2}
     - target: {fileID: 4997432785399298296, guid: 4b16c2c48ab73d940b18dd9e62db316a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8
@@ -604,7 +604,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 559305886867739475, guid: 4b16c2c48ab73d940b18dd9e62db316a, type: 3}
       propertyPath: m_text
-      value: "NPC-\u953B\u9020\n"
+      value: "\u953B\u9020\u5927\u5E08"
       objectReference: {fileID: 0}
     - target: {fileID: 559305886867739475, guid: 4b16c2c48ab73d940b18dd9e62db316a, type: 3}
       propertyPath: m_fontSize

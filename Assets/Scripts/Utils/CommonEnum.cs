@@ -7,6 +7,8 @@ public enum UILayer
 public enum TipType
 {
     Info = 1,   //游戏介绍
+    Weapon = 2, //武器不足
+    Mineral = 3, //矿物不足
 }
 
 public enum OrderInLayer

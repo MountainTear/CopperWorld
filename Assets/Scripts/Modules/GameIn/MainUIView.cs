@@ -70,7 +70,7 @@ public class MainUIView : ViewBase
 
     public void UpdateLayer()
     {
-        text_layercr.text = $"当前层数：\n{PlayerMgr.Instance.GetLayer()}";
+        text_layercr.text = $"（B）回城\n当前层数：{PlayerMgr.Instance.GetLayer()}";
     }
 
     public void UpdateMode()

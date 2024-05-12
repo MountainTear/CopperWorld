@@ -8,7 +8,10 @@ public class ConfigMgr : Singleton<ConfigMgr>
 {
     public ConfigTip configTip = new ConfigTip();
     public ConfigMineral configMineral = new ConfigMineral();
-    public ConfigMonster configMonster = new ConfigMonster(); 
+    public ConfigMonster configMonster = new ConfigMonster();
+    public ConfigWeapon configWeapon = new ConfigWeapon();
+    public ConfigForge configForge = new ConfigForge();
+    public ConfigOrder configOrder = new ConfigOrder();
 
     public ConfigMgr()
     {
@@ -20,6 +23,9 @@ public class ConfigMgr : Singleton<ConfigMgr>
         LoadTipConfig();
         LoadMineralConfig();
         LoadMonsterConfig();
+        LoadWeaponConfig();
+        LoadForgeConfig();
+        LoadOrderConfig();
     }
 
     private void LoadTipConfig()
@@ -53,6 +59,39 @@ public class ConfigMgr : Singleton<ConfigMgr>
     public MonsterC GetMonsterById(int id)
     {
         return configMonster.monsterList.Find(Monster => Monster.id == id);
+    }
+
+    private void LoadWeaponConfig()
+    {
+        TextAsset weaponJson = Resources.Load<TextAsset>("Configs/Weapon");
+        configWeapon = JsonUtility.FromJson<ConfigWeapon>(weaponJson.text);
+    }
+
+    public WeaponC GetWeaponById(int id)
+    {
+        return configWeapon.weaponList.Find(Weapon => Weapon.id == id);
+    }
+
+    private void LoadForgeConfig()
+    {
+        TextAsset forgeJson = Resources.Load<TextAsset>("Configs/Forge");
+        configForge = JsonUtility.FromJson<ConfigForge>(forgeJson.text);
+    }
+
+    public ForgeC GetForgeById(int id)
+    {
+        return configForge.forgeList.Find(Forge => Forge.id == id);
+    }
+
+    private void LoadOrderConfig()
+    {
+        TextAsset orderJson = Resources.Load<TextAsset>("Configs/Order");
+        configOrder = JsonUtility.FromJson<ConfigOrder>(orderJson.text);
+    }
+
+    public OrderC GetOrderById(int id)
+    {
+        return configOrder.orderList.Find(Order => Order.id == id);
     }
 }
 
@@ -108,4 +147,53 @@ public class MonsterC
 public class ConfigMonster
 {
     public List<MonsterC> monsterList;
+}
+
+[Serializable]
+public class WeaponC
+{
+    public int id;
+    public string name;
+    public int attack;
+}
+
+[Serializable]
+public class ConfigWeapon
+{
+    public List<WeaponC> weaponList;
+}
+
+[Serializable]
+public class CostItem
+{
+    public int id;
+    public int num;
+}
+
+[Serializable]
+public class ForgeC
+{
+    public int id;
+    public int weapon;
+    public List<CostItem> costList;
+}
+
+[Serializable]
+public class ConfigForge
+{
+    public List<ForgeC> forgeList;
+}
+
+[Serializable]
+public class OrderC
+{
+    public int id;
+    public int money;
+    public List<CostItem> costList;
+}
+
+[Serializable]
+public class ConfigOrder
+{
+    public List<OrderC> orderList;
 }

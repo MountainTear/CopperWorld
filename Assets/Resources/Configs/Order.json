@@ -1,0 +1,28 @@
+{
+  "orderList": [
+    {
+      "id": 1,
+      "money": 100,
+      "costList": [
+        {
+          "id": 1,
+          "num": 2
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "money": 200,
+      "costList": [
+        {
+          "id": 1,
+          "num": 1
+        },
+        {
+          "id": 2,
+          "num": 1
+        }
+      ]
+    }
+  ]
+}

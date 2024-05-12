@@ -1,0 +1,14 @@
+{
+  "weaponList": [
+    {
+      "id": 1,
+      "name": "轻语",
+      "attack": 10
+    },
+    {
+      "id": 2,
+      "name": "无尽",
+      "attack": 20
+    }
+  ]
+}

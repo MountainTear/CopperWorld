@@ -1,0 +1,32 @@
+{
+  "forgeList": [
+    {
+      "id": 1,
+      "weapon": 1,
+      "costList": [
+        {
+          "id": 2,
+          "num": 2
+        },
+        {
+          "id": 3,
+          "num": 1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "weapon": 2,
+      "costList": [
+        {
+          "id": 2,
+          "num": 1
+        },
+        {
+          "id": 4,
+          "num": 1
+        }
+      ]
+    }
+  ]
+}

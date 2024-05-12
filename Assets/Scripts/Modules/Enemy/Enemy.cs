@@ -53,7 +53,7 @@ public abstract class Enemy : MonoBehaviour
         {
             if (Time.time - lastCollisionTime >= DAMAGE_INTERVAL)
             {
-                TakeDamage(PlayerMgr.Instance.damage);
+                TakeDamage(PlayerMgr.Instance.GetDamage());
                 lastCollisionTime = Time.time;
             }
         }
