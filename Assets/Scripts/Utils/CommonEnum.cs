@@ -94,3 +94,9 @@ public enum SpecialTag
     Map = 2,
     Player = 3,
 }
+
+public enum NpcType
+{
+    Forge = 1,
+    Order = 2,
+}
