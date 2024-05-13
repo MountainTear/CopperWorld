@@ -34,8 +34,8 @@ public class Player : Singleton<Player>
     private float runSpeed = 7f;
     //跳跃
     private float minimumJumpEndTime;   //跳跃停止时间戳
-    private float jumpSpeed = 6.0f; //跳跃力
-    private float minimumJumpDuration = 0.5f;    //最长跳跃时间
+    private float jumpSpeed = 4.0f; //跳跃力
+    private float minimumJumpDuration = 0.3f;    //最长跳跃时间
     private float jumpInterruptFactor = 0.5f;    //跳跃力衰减系数
     private float gravityScale = 1f;   //重力缩放
     private float jumpXSpeed = 5f;   //跳跃横向移动速度
@@ -178,7 +178,8 @@ public class Player : Singleton<Player>
             if (buttonStateList[floatButton][1] && isInFloat)
             {
                 isInFloat = false;
-                doJumpInterrupt = true;
+                velocity.y = 0f;
+                //doJumpInterrupt = true;
                 //这里需要调用结束浮空函数
             }
 
@@ -277,6 +278,8 @@ public class Player : Singleton<Player>
     private void HandleStateChanged()
     {
         string stateName = null;
+        skeletonAnimation.loop = true;
+        skeletonAnimation.timeScale = 1f;
         switch (currentState)
         {
             case CharacterState.Idle:
@@ -289,16 +292,22 @@ public class Player : Singleton<Player>
                 stateName = "run";
                 break;
             case CharacterState.Rise:
+                skeletonAnimation.loop = false;
+                skeletonAnimation.timeScale = 0.1f;
                 stateName = "rise";
                 break;
             case CharacterState.Fall:
+                skeletonAnimation.loop = false;
+                skeletonAnimation.timeScale = 0.1f;
                 stateName = "fall";
                 break;
             case CharacterState.Attack:
+                skeletonAnimation.timeScale = 0.5f;
                 stateName = "attack";
                 break;
             case CharacterState.Mine:
-                stateName = "attack";   //暂时用攻击代替
+                skeletonAnimation.timeScale = 0.4f;
+                stateName = "mine";
                 break;
             case CharacterState.Float:
                 stateName = "float";
@@ -330,7 +339,7 @@ public class Player : Singleton<Player>
     /// <param name="state"></param>
     public void UpdateStateShow()
     {
-        PlayerMode mode = PlayerMgr.Instance.mode;
+/*        PlayerMode mode = PlayerMgr.Instance.mode;
         if (mode == PlayerMode.Attack)
         {
             animationHandle.skeletonAnimation.initialSkinName = "weapon/sword";
@@ -339,7 +348,7 @@ public class Player : Singleton<Player>
         {
             animationHandle.skeletonAnimation.initialSkinName = "weapon/morningstar";
         }
-        skeletonAnimation.Initialize(true);
+        skeletonAnimation.Initialize(true);*/
         HandleStateChanged();
     }
     #endregion

@@ -51,20 +51,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skeletonAnimation: {fileID: 995671481824159663}
   statesAndAnimations:
-  - stateName: walk
-    animation: {fileID: 11400000, guid: 7ba60952be5f38f4cb3d5c95ad239bc4, type: 2}
   - stateName: run
-    animation: {fileID: 11400000, guid: e0276c4dd23eba04b998e2e09d43cd21, type: 2}
+    animation: {fileID: 11400000, guid: bf747785e5e4eb142888b1263f31b4b9, type: 2}
   - stateName: idle
-    animation: {fileID: 11400000, guid: 35a7b14388d3c0842b8a971514d334ac, type: 2}
+    animation: {fileID: 11400000, guid: 00ebf9a2a01123f4b90e622f892dcdb7, type: 2}
   - stateName: rise
-    animation: {fileID: 11400000, guid: 2fc76c2261d5c18438db49086c1fcbc8, type: 2}
+    animation: {fileID: 11400000, guid: 73de7fff225f80c4a8960e3479d3e70d, type: 2}
   - stateName: fall
-    animation: {fileID: 11400000, guid: 0494fafdff6b2ae40beed0c1f7d21d01, type: 2}
+    animation: {fileID: 11400000, guid: 92395653055742e48b958a12cbdd3123, type: 2}
   - stateName: attack
-    animation: {fileID: 11400000, guid: 481a3c9d00173054c923aba60e2e914f, type: 2}
+    animation: {fileID: 11400000, guid: 72919328d2b91a64b80f8fa7834d269f, type: 2}
+  - stateName: mine
+    animation: {fileID: 11400000, guid: 1c8485505d57da843a7417cfb0e6d576, type: 2}
   - stateName: float
-    animation: {fileID: 11400000, guid: dd84d408a7b3213478c9e8fbc9489bf1, type: 2}
+    animation: {fileID: 11400000, guid: 6b05e593f27a58842af0472c6d1856b2, type: 2}
 --- !u!70 &7260187291999664579
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -97,8 +97,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 1.5}
-  m_Size: {x: 1, y: 3}
+  m_Offset: {x: 0, y: 0.9261194}
+  m_Size: {x: 0.8, y: 1.9477612}
   m_Direction: 0
 --- !u!61 &1549316627759674224
 BoxCollider2D:
@@ -335,7 +335,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 366694017764ad24fb864eacfba38b42, type: 2}
+  - {fileID: 2100000, guid: f22da20fa1b4ad046bdaf5772e359ac4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -369,8 +369,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: 453255cfcaffb7d45a2a213fa9441ed1, type: 2}
-  initialSkinName: weapon/sword
+  skeletonDataAsset: {fileID: 11400000, guid: abf7c4734ba7ff84485ce1c7971f8687, type: 2}
+  initialSkinName: 
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
   initialFlipY: 0
@@ -394,7 +394,7 @@ MonoBehaviour:
   disableRenderingOnOverride: 1
   updateTiming: 1
   unscaledTime: 0
-  _animationName: 
+  _animationName: dj
   loop: 1
   timeScale: 1
 --- !u!33 &3107721612951299403
