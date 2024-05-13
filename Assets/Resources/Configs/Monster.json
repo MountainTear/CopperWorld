@@ -5,7 +5,7 @@
       "id": 1,
       "name": "爬行怪",
       "layer": [ 1, 100 ],
-      "size": [ 6, 2 ],
+      "size": [ 8, 6],
       "prefab": "EnemyCrawl",
       "rateList": [
         {
@@ -22,7 +22,7 @@
       "id": 2,
       "name": "飞行怪",
       "layer": [ 101, 0 ],
-      "size": [ 6, 4 ],
+      "size": [ 8, 6],
       "prefab": "EnemyFly",
       "rateList": [
         {

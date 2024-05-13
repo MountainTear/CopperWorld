@@ -27,7 +27,7 @@ public class WeaponPopView : ViewBase
 
 		btn_closecr.onClick.AddListener(OnCloseClick);
 
-        UpdateView();
+        //UpdateView();
    }
     #endregion
 

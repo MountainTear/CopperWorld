@@ -274,6 +274,10 @@ public class Map
         {
             for (int y = startY; y > startY - height; y--)
             {
+                if (gridInfoDic[CommonUtil.Instance.XYToKey(x, y)] == null)
+                {
+                    continue; 
+                }
                 if (gridInfoDic[CommonUtil.Instance.XYToKey(x,y)].type != GridType.Air)
                 {
                     return false;
@@ -296,7 +300,7 @@ public class Map
             }
         }
         var config = ConfigMgr.Instance.GetMonsterById(id);
-        var pos = new Vector3Int(startX + width / 2, startY - height / 2, 0);
+        var pos = new Vector3Int(startX + width / 2, startY - height / 2 - 1, 0);
         var monster = GameObject.Instantiate(Resources.Load<GameObject>($"Prefabs/Monster/{config.prefab}"), tilemap.CellToWorld(pos), Quaternion.identity,MapMgr.Instance.monsterParent.transform);
         monsterList.Add(monster);
     }
