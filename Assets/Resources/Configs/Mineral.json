@@ -50,7 +50,7 @@
     {
       "id": 4,
       "name": "铜矿",
-      "layer": [21, 100],
+      "layer": [1, 100],
       "tile": "tile_4",
       "time": 2,
       "rateList":[
@@ -71,7 +71,7 @@
     {
       "id": 5,
       "name": "铝矿",
-      "layer": [101, 0],
+      "layer": [1, 100],
       "tile": "tile_5",
       "time": 3,
       "rateList":[

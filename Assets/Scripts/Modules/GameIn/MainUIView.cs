@@ -86,12 +86,12 @@ public class MainUIView : ViewBase
         if (PlayerMgr.Instance.mode == PlayerMode.Attack)
         {
             text_modecr.text = "攻击\n模式";
-            text_modeDesccr.text = string.Format("攻击力：");
+            text_modeDesccr.text = string.Format("攻击力：10");
         }
         else if (PlayerMgr.Instance.mode == PlayerMode.Mine)
         {
             text_modecr.text = "挖矿\n模式";
-            text_modeDesccr.text = string.Format("耐久度：");
+            text_modeDesccr.text = string.Format("耐久度：10");
         }
     }
 }

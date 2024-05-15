@@ -16,7 +16,7 @@ public class PlayerMgr : Singleton<PlayerMgr>
     public Vector3 posCache;
     public PlayerMode mode;
     public int healthCurrent;
-    public int healthMax = 10;
+    public int healthMax = 20;
     public int oxygenCurrent;
     public int oxygenMax = 100;
     public int damage = 1;

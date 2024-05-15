@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  health: 3
+  health: 10
   animationHandle: {fileID: 1550849042654161375}
   startWaitTime: 1
   attckRange: {fileID: 1448350653333879823}

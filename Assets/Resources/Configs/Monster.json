@@ -21,8 +21,8 @@
     {
       "id": 2,
       "name": "飞行怪",
-      "layer": [ 101, 0 ],
-      "size": [ 8, 6],
+      "layer": [ 1, 100 ],
+      "size": [ 8, 6 ],
       "prefab": "EnemyFly",
       "rateList": [
         {
