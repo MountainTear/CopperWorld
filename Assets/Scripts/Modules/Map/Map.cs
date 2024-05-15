@@ -274,11 +274,7 @@ public class Map
         {
             for (int y = startY; y > startY - height; y--)
             {
-                if (gridInfoDic[CommonUtil.Instance.XYToKey(x, y)] == null)
-                {
-                    continue; 
-                }
-                if (gridInfoDic[CommonUtil.Instance.XYToKey(x,y)].type != GridType.Air)
+                if ( ! gridInfoDic.ContainsKey(CommonUtil.Instance.XYToKey(x, y)) || gridInfoDic[CommonUtil.Instance.XYToKey(x, y)].type != GridType.Air)
                 {
                     return false;
                 }
